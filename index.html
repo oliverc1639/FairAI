@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClauseLens — Educational Legal Document Transparency</title>
+  <title>FairAI — Educational Legal Document Transparency</title>
   <style>
     :root{
       --bg: #0b0f17;
@@ -272,4 +272,823 @@
       width:40px;height:40px;border-radius: 14px;
       display:grid;place-items:center;
       background: rgba(255,255,255,0.06);
-      border:1px sol
+      border:1px solid rgba(255,255,255,0.12);
+      font-family: var(--mono);
+    }
+    .uploadLeft h3{
+      margin:0 0 4px;
+      font-size:14px;
+    }
+    .uploadLeft p{
+      margin:0;
+      color: var(--muted);
+      font-size:12.5px;
+      line-height:1.35;
+    }
+
+    .uploadRight{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .fakeInput{
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      padding:10px 12px;
+      border-radius: 14px;
+      color: rgba(255,255,255,0.70);
+      font-size:12.5px;
+      min-width: 210px;
+    }
+
+    /* Sidebar */
+    .heroSide{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .sideTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .sideTitle h3{
+      margin:0;
+      font-size:14px;
+    }
+    .sideTitle span{
+      font-size:12px;
+      color: var(--muted);
+    }
+
+    .toggleRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      border-radius: 14px;
+    }
+    .toggleRow .label{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .toggleRow .label b{
+      font-size:12.5px;
+      font-weight:600;
+    }
+    .toggleRow .label small{
+      color: var(--muted);
+      font-size:11.5px;
+      line-height:1.2;
+    }
+
+    .switch{
+      width:44px; height:26px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      position:relative;
+      cursor:pointer;
+      flex: 0 0 auto;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    .switch::after{
+      content:"";
+      position:absolute;
+      width:20px;height:20px;
+      top:50%; left:3px;
+      transform: translateY(-50%);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.82);
+      transition: left .15s ease, background .15s ease;
+    }
+    .switch.on{
+      background: rgba(53,208,127,0.18);
+      border-color: rgba(53,208,127,0.35);
+    }
+    .switch.on::after{
+      left:21px;
+      background: var(--good);
+    }
+
+    .fineprint{
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.35;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+    }
+    .fineprint b{ color: var(--text); font-weight:600; }
+
+    /* Main layout */
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap:18px;
+      align-items: start;
+    }
+
+    .sectionHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      padding:16px 18px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sectionHead h3{
+      margin:0;
+      font-size:14px;
+    }
+    .sectionHead p{
+      margin:0;
+      color: var(--muted);
+      font-size:12px;
+    }
+
+    /* Readability panel */
+    .metrics{
+      padding:14px 18px 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .metric{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      border-radius: 16px;
+      padding:12px;
+    }
+    .metric .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .metric .top span{
+      color: var(--muted);
+      font-size:12px;
+    }
+    .metric .value{
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .bar{
+      height:8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      overflow:hidden;
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,0.10);
+    }
+    .bar > div{
+      height:100%;
+      width: 62%;
+      background: linear-gradient(90deg, rgba(124,92,255,0.95), rgba(24,193,255,0.85));
+      border-radius: 999px;
+    }
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding: 0 18px 18px;
+    }
+    .lg{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      padding:6px 10px;
+      font-size:12px;
+      color: var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+      user-select:none;
+    }
+    .sw{ width:10px;height:10px;border-radius:3px; }
+    .sw.arb{ background: var(--hl-arb); border:1px solid rgba(124,92,255,0.45); }
+    .sw.fee{ background: var(--hl-fee); border:1px solid rgba(255,204,102,0.45); }
+    .sw.ren{ background: var(--hl-ren); border:1px solid rgba(24,193,255,0.45); }
+    .sw.waiv{ background: var(--hl-waiv); border:1px solid rgba(255,92,122,0.45); }
+    .sw.term{ background: var(--hl-term); border:1px solid rgba(53,208,127,0.45); }
+    .sw.rent{ background: var(--hl-rent); border:1px solid rgba(255,255,255,0.20); }
+
+    /* Document viewer mock */
+    .viewer{
+      padding: 0 0 16px;
+    }
+    .viewerTop{
+      padding: 14px 18px 10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .viewerTop .left{
+      display:flex; gap:10px; align-items:center;
+    }
+    .badge{
+      font-family: var(--mono);
+      font-size:11px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.75);
+      white-space:nowrap;
+    }
+    .viewerTop .right{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .select{
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.18);
+      color: rgba(255,255,255,0.86);
+      border-radius: 12px;
+      padding:10px 12px;
+      font-size:12.5px;
+      outline:none;
+    }
+
+    .doc{
+      padding: 14px 18px 0;
+      max-height: 520px;
+      overflow:auto;
+    }
+    .doc p{
+      margin:0 0 12px;
+      color: rgba(255,255,255,0.84);
+      line-height:1.55;
+      font-size:13.5px;
+    }
+    .doc .muted{
+      color: var(--muted);
+    }
+
+    mark{
+      padding:2px 4px;
+      border-radius: 6px;
+      border:1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.92);
+    }
+    mark.arb{ background: var(--hl-arb); }
+    mark.fee{ background: var(--hl-fee); }
+    mark.ren{ background: var(--hl-ren); }
+    mark.waiv{ background: var(--hl-waiv); }
+    mark.term{ background: var(--hl-term); }
+    mark.rent{ background: var(--hl-rent); }
+
+    /* Clause explanations panel */
+    .clauses{
+      padding: 14px 18px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    details{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+      border-radius: 16px;
+      padding:10px 12px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-size:13px;
+      user-select:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .sumLeft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+    .chipTag{
+      font-family: var(--mono);
+      font-size:11px;
+      padding:5px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.70);
+      white-space:nowrap;
+    }
+    .sumLeft b{
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 290px;
+    }
+    .impact{
+      margin-top:10px;
+      color: var(--muted);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+    .impact ul{
+      margin:8px 0 0 18px;
+      padding:0;
+    }
+    .impact li{ margin: 6px 0; }
+
+    /* Comparison mode */
+    .compare{
+      padding: 14px 18px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .compareGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .miniUpload{
+      border:1.5px dashed rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.18);
+      border-radius: 16px;
+      padding:12px;
+      min-height: 98px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .miniUpload b{
+      font-size:12.5px;
+    }
+    .miniUpload .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .hint{
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    /* Footer */
+    .footer{
+      margin-top:18px;
+      color: var(--muted);
+      font-size:12px;
+      text-align:center;
+      padding:18px 0 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr; }
+      .search{ display:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>FairAI</h1>
+          <p>Educational clause transparency (not legal advice)</p>
+        </div>
+      </div>
+
+      <div class="search" title="Search within the viewer (placeholder)">
+        <span style="opacity:.75;">🔎</span>
+        <input type="text" placeholder="Search document text (placeholder UI)"/>
+        <span class="kbd">Ctrl K</span>
+      </div>
+
+      <div class="actions">
+        <div class="chip" title="Status is UI-only">
+          <span class="dot"></span>
+          UI Prototype
+        </div>
+        <button class="btn" type="button">⚙️ Settings</button>
+        <button class="btn primary" type="button">✨ “Scan” Document</button>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+
+      <div class="card heroMain">
+        <div class="heroTitle">
+          <div>
+            <h2>Understand common legal structures without summarization.</h2>
+            <p>
+              Upload a lease, contract, or terms of service. This prototype highlights common clause
+              <span class="muted">(types only)</span> and shows pre-approved educational explanations.
+            </p>
+          </div>
+          <button class="btn" type="button" title="UI only">📄 Sample Doc</button>
+        </div>
+
+        <div class="banner">
+          <div class="pill"><span class="tag">NO</span> <b>legal advice</b></div>
+          <div class="pill"><span class="tag">NO</span> <b>document-specific interpretation</b></div>
+          <div class="pill"><span class="tag">YES</span> <b>readability metrics</b></div>
+          <div class="pill"><span class="tag">YES</span> <b>clause-type highlights</b></div>
+        </div>
+
+        <div class="uploadZone">
+          <div class="uploadLeft">
+            <div class="uploadIcon" aria-hidden="true">PDF</div>
+            <div>
+              <h3>Upload a document</h3>
+              <p>Drag & drop a PDF/DOCX, or select a file. (Buttons are non-functional in this prototype.)</p>
+            </div>
+          </div>
+          <div class="uploadRight">
+            <div class="fakeInput" aria-hidden="true">No file selected</div>
+            <button class="btn" type="button">Browse</button>
+            <button class="btn primary" type="button">Upload</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card heroSide">
+        <div class="sideTitle">
+          <h3>Detection Filters</h3>
+          <span>UI-only</span>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Arbitration clauses</b>
+            <small>Often restricts court access</small>
+          </div>
+          <div class="switch on" data-switch="arb" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Late fees & penalties</b>
+            <small>Fees triggered by timing</small>
+          </div>
+          <div class="switch on" data-switch="fee" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Auto renewal</b>
+            <small>Renews unless canceled</small>
+          </div>
+          <div class="switch on" data-switch="ren" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Termination conditions</b>
+            <small>Exit rules & notice</small>
+          </div>
+          <div class="switch on" data-switch="term" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Liability waivers</b>
+            <small>Limits responsibility</small>
+          </div>
+          <div class="switch on" data-switch="waiv" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Rent increases</b>
+            <small>Increases & timing</small>
+          </div>
+          <div class="switch on" data-switch="rent" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="fineprint">
+          <b>Disclosure:</b> This is an educational prototype. It highlights clause <b>types</b> and displays
+          generic explanations. It does not provide legal advice or interpret your document.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid">
+
+      <!-- Readability & Clause Explanations -->
+      <div class="card">
+        <div class="sectionHead">
+          <div>
+            <h3>Readability Dashboard</h3>
+            <p>Objective metrics (placeholder values)</p>
+          </div>
+          <button class="btn" type="button">⬇️ Export Report</button>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <div class="top"><span>Grade level</span><span class="chipTag">Flesch-Kincaid</span></div>
+            <div class="value">12.8</div>
+            <div class="bar"><div style="width:78%"></div></div>
+          </div>
+
+          <div class="metric">
+            <div class="top"><span>Avg sentence length</span><span class="chipTag">words</span></div>
+            <div class="value">27</div>
+            <div class="bar"><div style="width:64%"></div></div>
+          </div>
+
+          <div class="metric">
+            <div class="top"><span>Passive voice</span><span class="chipTag">frequency</span></div>
+            <div class="value">18%</div>
+            <div class="bar"><div style="width:36%"></div></div>
+          </div>
+
+          <div class="metric">
+            <div class="top"><span>Legal jargon density</span><span class="chipTag">terms / 1k</span></div>
+            <div class="value">42</div>
+            <div class="bar"><div style="width:58%"></div></div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <div class="lg"><span class="sw arb"></span> Arbitration</div>
+          <div class="lg"><span class="sw fee"></span> Late fees</div>
+          <div class="lg"><span class="sw ren"></span> Auto renewal</div>
+          <div class="lg"><span class="sw term"></span> Termination</div>
+          <div class="lg"><span class="sw waiv"></span> Liability waiver</div>
+          <div class="lg"><span class="sw rent"></span> Rent increase</div>
+        </div>
+
+        <div class="sectionHead" style="border-top:1px solid rgba(255,255,255,0.08); border-bottom:none;">
+          <div>
+            <h3>Detected Clause Types</h3>
+            <p>Generic, pre-approved explanations (mock)</p>
+          </div>
+          <button class="btn" type="button">🧩 Manage Library</button>
+        </div>
+
+        <div class="clauses">
+          <details open>
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">ARB</span>
+                <b>Arbitration requirement</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>What it usually means:</b> Disputes are typically resolved through arbitration instead of court.</div>
+              <ul>
+                <li>May limit the ability to sue in court or participate in class actions.</li>
+                <li>May require disputes to be handled privately with an arbitrator.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">FEE</span>
+                <b>Late fees / penalty language</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>What it usually means:</b> Payments after a specified date may trigger fees or penalties.</div>
+              <ul>
+                <li>May add a flat fee and/or daily interest-like charges.</li>
+                <li>May create additional consequences after repeated late payments.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">REN</span>
+                <b>Automatic renewal</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>What it usually means:</b> The agreement renews unless you cancel within a notice period.</div>
+              <ul>
+                <li>May require cancellation before a deadline (e.g., 30 days notice).</li>
+                <li>May continue billing or obligations into a new term.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">TERM</span>
+                <b>Termination conditions</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>What it usually means:</b> Rules for ending the agreement (notice, fees, causes).</div>
+              <ul>
+                <li>May impose fees for early termination.</li>
+                <li>May require written notice and specific delivery methods.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">WAIV</span>
+                <b>Liability waiver / limitation</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>What it usually means:</b> Limits responsibility for damages under certain conditions.</div>
+              <ul>
+                <li>May reduce compensation available for certain losses.</li>
+                <li>May exclude indirect, incidental, or consequential damages.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">RENT</span>
+                <b>Rent increase notice</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>What it usually means:</b> Describes if/when rent can change and how notice is given.</div>
+              <ul>
+                <li>May allow increases after a set term or with written notice.</li>
+                <li>May specify timing, delivery, and effective dates.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Document Viewer & Comparison Mode -->
+      <div class="card viewer">
+        <div class="viewerTop">
+          <div class="left">
+            <span class="badge">Viewer</span>
+            <span class="badge">Highlights: ON</span>
+            <span class="badge">Explanations: ON</span>
+          </div>
+          <div class="right">
+            <select class="select" aria-label="View mode">
+              <option>Single document</option>
+              <option>Comparison mode</option>
+            </select>
+            <button class="btn" type="button">🖍️ Toggle Highlights</button>
+            <button class="btn" type="button">🧾 Jump to Clause</button>
+          </div>
+        </div>
+
+        <div class="doc" id="doc">
+          <p class="muted" style="margin-top:2px;">
+            This is mock content to show how highlights will look after detection.
+            Replace with real extracted text later.
+          </p>
+
+          <p>
+            12. <mark class="arb" data-type="arb">DISPUTE RESOLUTION AND ARBITRATION.</mark> Any dispute arising out of or relating
+            to this Agreement shall be resolved by binding arbitration administered by a mutually agreed arbitrator.
+            The parties waive any right to a trial by jury and agree that arbitration shall be the exclusive forum.
+          </p>
+
+          <p>
+            6. <mark class="fee" data-type="fee">LATE FEES.</mark> If payment is not received within five (5) days of the due date,
+            a late fee may be assessed. Additional charges may apply for repeated late payments or returned payments.
+          </p>
+
+          <p>
+            9. <mark class="ren" data-type="ren">AUTOMATIC RENEWAL.</mark> This Agreement will renew for successive terms unless
+            either party provides written notice of non-renewal at least thirty (30) days before the end of the current term.
+          </p>
+
+          <p>
+            14. <mark class="term" data-type="term">TERMINATION.</mark> Either party may terminate this Agreement upon written notice
+            as described herein. Early termination may result in fees, and termination procedures may require specific delivery.
+          </p>
+
+          <p>
+            18. <mark class="waiv" data-type="waiv">LIMITATION OF LIABILITY.</mark> To the maximum extent permitted by law,
+            the provider shall not be liable for indirect, incidental, special, consequential, or punitive damages.
+          </p>
+
+          <p>
+            4. <mark class="rent" data-type="rent">RENT INCREASES.</mark> Rent may be increased following the initial term with written
+            notice provided in accordance with the notice requirements of this Agreement.
+          </p>
+
+          <p class="muted">
+            End of mock preview. In the real version, the viewer would show your document text, with highlights mapped to detected spans.
+          </p>
+        </div>
+
+        <div class="sectionHead" style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.08);">
+          <div>
+            <h3>Comparison Mode</h3>
+            <p>Compare old vs. new documents (UI only)</p>
+          </div>
+          <button class="btn primary" type="button">🔍 Compare</button>
+        </div>
+
+        <div class="compare">
+          <div class="compareGrid">
+            <div class="miniUpload">
+              <div>
+                <b>Document A (Old)</b>
+                <div class="hint">Upload or drag a file here.</div>
+              </div>
+              <div class="row">
+                <span class="badge">A.pdf</span>
+                <button class="btn" type="button">Browse</button>
+              </div>
+            </div>
+
+            <div class="miniUpload">
+              <div>
+                <b>Document B (New)</b>
+                <div class="hint">Upload or drag a file here.</div>
+              </div>
+              <div class="row">
+                <span class="badge">B.pdf</span>
+                <button class="btn" type="button">Browse</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="fineprint">
+            <b>How it would work (later):</b> The system highlights changes between documents and flags newly added clause types.
+            This prototype only shows layout and controls.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      FairAI UI Prototype • Educational transparency • No legal advice • No document-specific interpretation
+    </div>
+  </div>
+
+  <script>
+    // UI-only interactions: switches toggle highlight visibility by clause type.
+    const switches = document.querySelectorAll(".switch");
+    const marks = document.querySelectorAll("mark[data-type]");
+
+    function setTypeVisibility(type, on){
+      marks.forEach(m => {
+        if(m.dataset.type === type){
+          m.style.display = on ? "inline" : "inline";
+          m.style.opacity = on ? "1" : "0.18";
+          m.style.filter = on ? "none" : "grayscale(0.6)";
+        }
+      });
+    }
+
+    switches.forEach(sw => {
+      sw.addEventListener("click", () => {
+        sw.classList.toggle("on");
+        const on = sw.classList.contains("on");
+        sw.setAttribute("aria-checked", on ? "true" : "false");
+        const type = sw.dataset.switch;
+        setTypeVisibility(type, on);
+      });
+    });
+  </script>
+</body>
+</html>
