@@ -3,35 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Civic Sidekick — Common Document Finder + Clause Spotlight (Educational)</title>
+  <title>Civic Sidekick — Document Spotlight (Prototype)</title>
 
   <style>
     :root{
-      --bg: #0b0f17;
-      --panel: rgba(255,255,255,0.06);
-      --panel2: rgba(255,255,255,0.09);
-      --border: rgba(255,255,255,0.12);
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.68);
-      --muted2: rgba(255,255,255,0.55);
-      --shadow: 0 20px 60px rgba(0,0,0,0.45);
+      /* Brighter, calm theme */
+      --bg1:#f7f9ff;
+      --bg2:#f3fbff;
+      --bg3:#f7fff8;
+
+      --card: rgba(255,255,255,0.85);
+      --border: rgba(20, 30, 60, 0.10);
+      --text: rgba(15, 20, 35, 0.92);
+      --muted: rgba(15, 20, 35, 0.62);
+
+      --accent:#5b6cff;   /* soft indigo */
+      --accent2:#1fb6ff;  /* soft sky */
+      --good:#22c55e;     /* soft green */
+      --warn:#f59e0b;     /* soft amber */
+      --shadow: 0 18px 50px rgba(20,30,60,0.10);
+
       --radius: 18px;
 
-      --accent: #7c5cff;
-      --accent2:#18c1ff;
-      --good:#35d07f;
-      --warn:#ffcc66;
-      --bad:#ff5c7a;
-
-      --hl-id: rgba(124,92,255,0.28);     /* Identity / declarations */
-      --hl-dead: rgba(255,204,102,0.26);  /* Deadlines / notices */
-      --hl-fee: rgba(24,193,255,0.22);    /* Fees / billing */
-      --hl-data: rgba(255,92,122,0.22);   /* Data sharing / consent */
-      --hl-waiv: rgba(53,208,127,0.20);   /* Waivers / limitations */
-      --hl-att: rgba(255,255,255,0.14);   /* Attestations / penalties */
-
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     *{ box-sizing:border-box; }
@@ -39,615 +34,252 @@
       margin:0;
       font-family: var(--sans);
       color: var(--text);
-      background:
-        radial-gradient(1200px 800px at 20% 10%, rgba(124,92,255,0.18), transparent 60%),
-        radial-gradient(900px 700px at 80% 30%, rgba(24,193,255,0.14), transparent 55%),
-        radial-gradient(700px 500px at 50% 90%, rgba(53,208,127,0.10), transparent 60%),
-        var(--bg);
       min-height:100vh;
+      background:
+        radial-gradient(1100px 700px at 18% 12%, rgba(91,108,255,0.18), transparent 55%),
+        radial-gradient(900px 650px at 82% 20%, rgba(31,182,255,0.18), transparent 55%),
+        radial-gradient(900px 650px at 50% 90%, rgba(34,197,94,0.12), transparent 55%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
     }
 
-    a{ color:inherit; text-decoration:none; }
+    a{ color: inherit; text-decoration:none; }
     .wrap{
-      max-width:1200px;
-      margin:0 auto;
-      padding:26px 18px 60px;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 22px 16px 52px;
     }
 
-    /* Top bar */
+    /* Top bar (minimal) */
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
-      padding:14px 16px;
+      gap:12px;
+      padding: 12px 14px;
       border:1px solid var(--border);
-      background: var(--panel);
+      background: var(--card);
       border-radius: 999px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
       position: sticky;
-      top: 14px;
-      z-index: 20;
+      top: 12px;
+      z-index: 10;
     }
+
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
-      min-width: 260px;
+      gap:10px;
+      min-width: 180px;
     }
     .logo{
-      width:38px;height:38px;border-radius: 12px;
+      width:34px; height:34px;
+      border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 14px 30px rgba(124,92,255,0.25);
+      box-shadow: 0 14px 26px rgba(91,108,255,0.18);
       position: relative;
       overflow:hidden;
+      flex: 0 0 auto;
     }
     .logo:after{
       content:"";
-      position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), transparent 55%);
-      transform: rotate(10deg);
+      position:absolute; inset:-45%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.70), transparent 60%);
+      transform: rotate(12deg);
     }
-    .brand h1{
-      font-size:14px;
+
+    .brandText h1{
       margin:0;
-      letter-spacing:0.3px;
+      font-size: 13.5px;
+      letter-spacing: 0.2px;
     }
-    .brand p{
+    .brandText p{
       margin:0;
-      font-size:12px;
+      font-size: 12px;
       color: var(--muted);
     }
 
-    .search{
-      flex:1;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border:1px solid var(--border);
-      border-radius: 999px;
-      background: rgba(0,0,0,0.18);
-      min-width: 240px;
-    }
-    .search input{
-      width:100%;
-      border:none;
-      outline:none;
-      background: transparent;
-      color: var(--text);
-      font-size:13px;
-    }
-    .kbd{
-      font-family: var(--mono);
-      font-size:11px;
-      color: var(--muted2);
-      border:1px solid var(--border);
-      border-bottom-color: rgba(255,255,255,0.22);
-      padding:4px 8px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.06);
-      white-space:nowrap;
-    }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
     .btn{
       border:1px solid var(--border);
-      background: rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.75);
       color: var(--text);
-      padding:10px 12px;
+      padding: 10px 12px;
       border-radius: 999px;
-      font-size:13px;
+      font-size: 13px;
       cursor:pointer;
       transition: transform .05s ease, background .15s ease, border-color .15s ease;
       display:inline-flex;
       align-items:center;
       gap:8px;
       user-select:none;
+      box-shadow: 0 10px 26px rgba(20,30,60,0.06);
     }
-    .btn:hover{ background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.18); }
+    .btn:hover{ background: rgba(255,255,255,0.92); border-color: rgba(20,30,60,0.14); }
     .btn:active{ transform: translateY(1px); }
+
     .btn.primary{
-      background: linear-gradient(135deg, rgba(124,92,255,0.90), rgba(24,193,255,0.75));
+      background: linear-gradient(135deg, rgba(91,108,255,0.95), rgba(31,182,255,0.90));
+      color: rgba(255,255,255,0.96);
       border-color: transparent;
-      box-shadow: 0 18px 45px rgba(124,92,255,0.22);
+      box-shadow: 0 16px 34px rgba(31,182,255,0.18);
     }
-    .chip{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      padding:8px 10px;
-      border-radius: 999px;
-      font-size:12px;
+
+    /* Hero (short + easy) */
+    .hero{
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .hero h2{
+      margin:0 0 6px;
+      font-size: 20px;
+      letter-spacing: 0.2px;
+      line-height: 1.15;
+    }
+    .hero p{
+      margin:0;
       color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      max-width: 70ch;
+    }
+
+    /* Simple “search” (non-functional) */
+    .searchBar{
       display:flex;
       align-items:center;
+      gap:10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.78);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 24px rgba(20,30,60,0.05);
+    }
+    .searchBar span{ opacity: 0.75; }
+    .searchBar input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .searchHint{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    /* Document grid (front page focus) */
+    .section{
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sectionHead{
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(20,30,60,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .sectionHead b{
+      font-size: 13.5px;
+    }
+    .sectionHead span{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .docGrid{
+      padding: 14px 16px 16px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .docCard{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.82);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(20,30,60,0.05);
+      transition: transform .06s ease, border-color .15s ease, background .15s ease;
+      cursor:pointer;
+      min-height: 96px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .docCard:hover{
+      transform: translateY(-1px);
+      border-color: rgba(20,30,60,0.16);
+      background: rgba(255,255,255,0.92);
+    }
+    .docTitle{
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+    .docMeta{
+      display:flex;
+      flex-wrap:wrap;
       gap:8px;
+      align-items:center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border: 1px solid rgba(20,30,60,0.10);
+      background: rgba(245, 247, 255, 0.85);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: rgba(15,20,35,0.75);
       white-space:nowrap;
     }
     .dot{
-      width:9px; height:9px;
-      border-radius:999px;
-      background: var(--good);
-      box-shadow: 0 0 0 4px rgba(53,208,127,0.10);
-    }
-
-    /* Hero */
-    .hero{
-      margin-top: 18px;
-      display:grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap:18px;
-      align-items: stretch;
-    }
-    .card{
-      border:1px solid var(--border);
-      background: var(--panel);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      overflow:hidden;
-    }
-    .heroMain{
-      padding:22px 22px 18px;
-      position:relative;
-    }
-    .heroMain:before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      background: radial-gradient(900px 260px at 10% 0%, rgba(124,92,255,0.24), transparent 60%),
-                  radial-gradient(760px 220px at 90% 15%, rgba(24,193,255,0.18), transparent 55%);
-      pointer-events:none;
-      opacity:0.9;
-    }
-    .heroMain > *{ position:relative; }
-    .heroTitle{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-    }
-    .heroTitle h2{
-      margin:0 0 6px;
-      font-size:22px;
-      letter-spacing:0.2px;
-    }
-    .heroTitle p{
-      margin:0;
-      color: var(--muted);
-      line-height:1.45;
-      font-size:13.5px;
-      max-width: 70ch;
-    }
-
-    .banner{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .pill{
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.18);
-      padding:8px 10px;
+      width:8px; height:8px;
       border-radius: 999px;
-      font-size:12px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(31,182,255,0.12);
+    }
+
+    /* Tiny disclaimer (short) */
+    .footerNote{
+      margin-top: 12px;
       color: var(--muted);
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    .pill b{ color: var(--text); font-weight:600; }
-    .pill .tag{
-      font-family: var(--mono);
-      font-size:11px;
-      border:1px solid rgba(255,255,255,0.16);
-      padding:3px 7px;
-      border-radius: 999px;
-      color: rgba(255,255,255,0.72);
-      background: rgba(255,255,255,0.05);
-    }
-
-    /* “Search query” zone */
-    .queryZone{
-      margin-top:16px;
-      border:1.5px dashed rgba(255,255,255,0.18);
-      background: rgba(0,0,0,0.18);
-      padding:16px;
-      border-radius: 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .queryLeft{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-    }
-    .queryIcon{
-      width:40px;height:40px;border-radius: 14px;
-      display:grid;place-items:center;
-      background: rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.12);
-      font-family: var(--mono);
-    }
-    .queryLeft h3{
-      margin:0 0 4px;
-      font-size:14px;
-    }
-    .queryLeft p{
-      margin:0;
-      color: var(--muted);
-      font-size:12.5px;
-      line-height:1.35;
-      max-width: 70ch;
-    }
-    .queryRight{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .queryInput{
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
-      padding:10px 12px;
-      border-radius: 14px;
-      color: rgba(255,255,255,0.90);
-      font-size:12.5px;
-      min-width: 280px;
-      outline:none;
-    }
-    .miniNote{
-      color: var(--muted2);
-      font-size:12px;
-      margin-top:10px;
-      line-height:1.35;
-    }
-
-    /* Sidebar */
-    .heroSide{
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .sideTitle{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .sideTitle h3{
-      margin:0;
-      font-size:14px;
-    }
-    .sideTitle span{
-      font-size:12px;
-      color: var(--muted);
-    }
-
-    .toggleRow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      padding:10px 12px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.18);
-      border-radius: 14px;
-    }
-    .toggleRow .label{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    .toggleRow .label b{
-      font-size:12.5px;
-      font-weight:600;
-    }
-    .toggleRow .label small{
-      color: var(--muted);
-      font-size:11.5px;
-      line-height:1.2;
-    }
-
-    .switch{
-      width:44px; height:26px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
-      position:relative;
-      cursor:pointer;
-      flex: 0 0 auto;
-      transition: background .15s ease, border-color .15s ease;
-    }
-    .switch::after{
-      content:"";
-      position:absolute;
-      width:20px;height:20px;
-      top:50%; left:3px;
-      transform: translateY(-50%);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.82);
-      transition: left .15s ease, background .15s ease;
-    }
-    .switch.on{
-      background: rgba(53,208,127,0.18);
-      border-color: rgba(53,208,127,0.35);
-    }
-    .switch.on::after{
-      left:21px;
-      background: var(--good);
-    }
-
-    .fineprint{
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.35;
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.18);
-    }
-    .fineprint b{ color: var(--text); font-weight:600; }
-
-    /* Main layout */
-    .grid{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap:18px;
-      align-items: start;
-    }
-
-    .sectionHead{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:12px;
-      padding:16px 18px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .sectionHead h3{
-      margin:0;
-      font-size:14px;
-    }
-    .sectionHead p{
-      margin:0;
-      color: var(--muted);
-      font-size:12px;
-    }
-
-    /* Catalog list */
-    .catalog{
-      padding: 14px 18px 18px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .docCard{
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.18);
-      border-radius: 16px;
-      padding:12px;
-      cursor:pointer;
-      transition: background .15s ease, border-color .15s ease, transform .05s ease;
-    }
-    .docCard:hover{
-      background: rgba(0,0,0,0.22);
-      border-color: rgba(255,255,255,0.18);
-    }
-    .docCard:active{ transform: translateY(1px); }
-    .docTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .docTop b{
-      font-size:13px;
-      display:block;
-      line-height:1.2;
-    }
-    .docTop .code{
-      font-family: var(--mono);
-      font-size:11px;
-      padding:6px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.75);
-      white-space:nowrap;
-      flex:0 0 auto;
-    }
-    .docMeta{
-      margin-top:8px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-    .metaPill{
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-      border-radius: 999px;
-      padding:6px 10px;
-    }
-
-    /* Highlights legend */
-    .legend{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      padding: 0 18px 18px;
-    }
-    .lg{
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      border-radius: 999px;
-      padding:6px 10px;
-      font-size:12px;
-      color: var(--muted);
-      display:flex;
-      gap:8px;
-      align-items:center;
-      user-select:none;
-    }
-    .sw{ width:10px;height:10px;border-radius:3px; }
-    .sw.id{ background: var(--hl-id); border:1px solid rgba(124,92,255,0.45); }
-    .sw.dead{ background: var(--hl-dead); border:1px solid rgba(255,204,102,0.45); }
-    .sw.fee{ background: var(--hl-fee); border:1px solid rgba(24,193,255,0.45); }
-    .sw.data{ background: var(--hl-data); border:1px solid rgba(255,92,122,0.45); }
-    .sw.waiv{ background: var(--hl-waiv); border:1px solid rgba(53,208,127,0.45); }
-    .sw.att{ background: var(--hl-att); border:1px solid rgba(255,255,255,0.20); }
-
-    /* Viewer */
-    .viewer{
-      padding: 0 0 16px;
-    }
-    .viewerTop{
-      padding: 14px 18px 10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .viewerTop .left{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-    }
-    .badge{
-      font-family: var(--mono);
-      font-size:11px;
-      padding:6px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.75);
-      white-space:nowrap;
-    }
-    .viewerTop .right{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .select{
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.18);
-      color: rgba(255,255,255,0.86);
-      border-radius: 12px;
-      padding:10px 12px;
-      font-size:12.5px;
-      outline:none;
-    }
-    .doc{
-      padding: 14px 18px 0;
-      max-height: 560px;
-      overflow:auto;
-    }
-    .doc p{
-      margin:0 0 12px;
-      color: rgba(255,255,255,0.84);
-      line-height:1.55;
-      font-size:13.5px;
-    }
-    .doc .muted{ color: var(--muted); }
-
-    mark{
-      padding:2px 4px;
-      border-radius: 6px;
-      border:1px solid rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.92);
-    }
-    mark.id{ background: var(--hl-id); }
-    mark.dead{ background: var(--hl-dead); }
-    mark.fee{ background: var(--hl-fee); }
-    mark.data{ background: var(--hl-data); }
-    mark.waiv{ background: var(--hl-waiv); }
-    mark.att{ background: var(--hl-att); }
-
-    /* Clause panel */
-    .clauses{
-      padding: 14px 18px 18px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    details{
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.18);
-      border-radius: 16px;
-      padding:10px 12px;
-    }
-    summary{
-      cursor:pointer;
-      list-style:none;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-size:13px;
-      user-select:none;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    .sumLeft{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 0;
-    }
-    .chipTag{
-      font-family: var(--mono);
-      font-size:11px;
-      padding:5px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.70);
-      white-space:nowrap;
-    }
-    .sumLeft b{
-      font-weight:700;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 290px;
-    }
-    .impact{
-      margin-top:10px;
-      color: var(--muted);
-      font-size:12.5px;
-      line-height:1.45;
-    }
-    .impact ul{
-      margin:8px 0 0 18px;
-      padding:0;
-    }
-    .impact li{ margin: 6px 0; }
-
-    /* Footer */
-    .footer{
-      margin-top:18px;
-      color: var(--muted);
-      font-size:12px;
+      font-size: 12px;
+      line-height: 1.35;
       text-align:center;
-      padding:18px 0 0;
     }
 
     /* Responsive */
     @media (max-width: 980px){
-      .hero{ grid-template-columns: 1fr; }
-      .grid{ grid-template-columns: 1fr; }
-      .search{ display:none; }
+      .heroGrid{ grid-template-columns: 1fr; }
+      .docGrid{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -659,675 +291,146 @@
     <div class="topbar">
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
-        <div>
+        <div class="brandText">
           <h1>Civic Sidekick</h1>
-          <p>Common document finder + clause spotlight (educational)</p>
+          <p>Quick document spotlights</p>
         </div>
       </div>
 
-      <div class="search" title="Search the document catalog">
-        <span style="opacity:.75;">🔎</span>
-        <input id="globalSearch" type="text" placeholder='Search: "N-400", "Affidavit of Support", "bank account", "SS-5"...'/>
-        <span class="kbd">Ctrl K</span>
-      </div>
-
-      <div class="actions">
-        <div class="chip" title="Status is UI-only">
-          <span class="dot"></span>
-          UI Prototype
-        </div>
-        <button class="btn" id="btnAbout" type="button">ℹ️ About</button>
-        <button class="btn primary" id="btnRunQuery" type="button">🔍 Run Search Query</button>
-      </div>
+      <button class="btn" type="button" title="UI only">🌐 Language</button>
+      <button class="btn primary" type="button" title="UI only">Start</button>
     </div>
 
-    <!-- Hero -->
+    <!-- Hero (very minimal, immigrant-friendly) -->
     <div class="hero">
-
-      <div class="card heroMain">
-        <div class="heroTitle">
-          <div>
-            <h2>Find the document name first. Then spotlight the parts that can actually impact someone.</h2>
-            <p>
-              This prototype focuses on identifying <span class="muted">common legal document names</span> people are asked to sign in the U.S.—
-              with a strong focus on <b>immigration</b> and the path to becoming a legal resident/citizen. It highlights
-              clause categories that often carry real consequences (deadlines, attestations, data sharing, fees).
-            </p>
-          </div>
-          <button class="btn" id="btnLoadExample" type="button" title="Loads a sample from the catalog">📄 Load Example</button>
-        </div>
-
-        <div class="banner">
-          <div class="pill"><span class="tag">NO</span> <b>legal advice</b></div>
-          <div class="pill"><span class="tag">NO</span> <b>document-specific interpretation</b></div>
-          <div class="pill"><span class="tag">YES</span> <b>document-name discovery</b></div>
-          <div class="pill"><span class="tag">YES</span> <b>clause-category highlights</b></div>
-        </div>
-
-        <div class="queryZone">
-          <div class="queryLeft">
-            <div class="queryIcon" aria-hidden="true">QRY</div>
-            <div>
-              <h3>Search Query (library lookup)</h3>
-              <p>
-                Type what someone would say in real life—then this tool returns likely document names (forms, agreements, notices).
-                You’re not “uploading to an AI.” You’re searching a curated library of common documents.
-              </p>
-              <div class="miniNote">
-                Examples: “apply for citizenship”, “green card”, “sponsor my spouse”, “work permit”, “social security card”, “open bank account”
-              </div>
-            </div>
-          </div>
-          <div class="queryRight">
-            <input id="queryInput" class="queryInput" type="text" value="apply for citizenship (naturalization)" />
-            <button class="btn" id="btnClear" type="button">🧹 Clear</button>
-            <button class="btn primary" id="btnSearch" type="button">Search</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card heroSide">
-        <div class="sideTitle">
-          <h3>Highlight Filters</h3>
-          <span>UI-only</span>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Identity / declarations</b>
-            <small>Names, status, required facts</small>
-          </div>
-          <div class="switch on" data-switch="id" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Deadlines / notices</b>
-            <small>Timing rules, missed-date risk</small>
-          </div>
-          <div class="switch on" data-switch="dead" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Fees / payments</b>
-            <small>Costs, refunds, billing rules</small>
-          </div>
-          <div class="switch on" data-switch="fee" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Data sharing / consent</b>
-            <small>Info release, checks, agencies</small>
-          </div>
-          <div class="switch on" data-switch="data" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Waivers / limitations</b>
-            <small>Limits, rights, appeal constraints</small>
-          </div>
-          <div class="switch on" data-switch="waiv" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Attestations / penalties</b>
-            <small>Sworn statements, consequences</small>
-          </div>
-          <div class="switch on" data-switch="att" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="fineprint">
-          <b>Disclosure:</b> Educational prototype. It identifies common document names and highlights clause <b>categories</b>.
-          It does not interpret your situation or provide legal advice.
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Main Grid -->
-    <div class="grid">
-
-      <!-- Catalog + Explanations -->
-      <div class="card">
-        <div class="sectionHead">
-          <div>
-            <h3>Document Library</h3>
-            <p>Search results + common immigration & “life-in-America” documents</p>
-          </div>
-          <button class="btn" id="btnResetCatalog" type="button">↩️ Reset</button>
-        </div>
-
-        <div class="catalog" id="catalog">
-          <!-- Filled by JS -->
-        </div>
-
-        <div class="legend">
-          <div class="lg"><span class="sw id"></span> Identity / declarations</div>
-          <div class="lg"><span class="sw dead"></span> Deadlines / notices</div>
-          <div class="lg"><span class="sw fee"></span> Fees / payments</div>
-          <div class="lg"><span class="sw data"></span> Data sharing / consent</div>
-          <div class="lg"><span class="sw waiv"></span> Waivers / limitations</div>
-          <div class="lg"><span class="sw att"></span> Attestations / penalties</div>
-        </div>
-
-        <div class="sectionHead" style="border-top:1px solid rgba(255,255,255,0.08); border-bottom:none;">
-          <div>
-            <h3>Clause Spotlight Library</h3>
-            <p>Pre-written educational explanations (category-based)</p>
-          </div>
-          <button class="btn" id="btnExpandAll" type="button">⬇️ Expand</button>
-        </div>
-
-        <div class="clauses" id="clausePanel">
-          <details open data-clause="id">
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">ID</span>
-                <b>Identity / declarations</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>Why it matters:</b> These sections lock in names, dates, status, and factual statements that the document relies on.</div>
-              <ul>
-                <li>Mismatches can cause delays, denials, or repeated requests for evidence.</li>
-                <li>Names/IDs can follow you across agencies; errors can be hard to unwind.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details data-clause="dead">
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">DEAD</span>
-                <b>Deadlines / notices</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>Why it matters:</b> Timing rules can create “automatic” consequences if a date is missed.</div>
-              <ul>
-                <li>Watch for response windows (e.g., “within X days”), mailing rules, and when a clock starts.</li>
-                <li>Some deadlines can trigger fees, loss of benefits, or restarting a process.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details data-clause="fee">
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">FEE</span>
-                <b>Fees / payments</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>Why it matters:</b> Fees can be nonrefundable, conditional, or tied to specific submission steps.</div>
-              <ul>
-                <li>Look for refund rules, “returned” payment consequences, and fee waiver requirements.</li>
-                <li>Costs can be split across multiple forms (filing + biometrics + copies + translations).</li>
-              </ul>
-            </div>
-          </details>
-
-          <details data-clause="data">
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">DATA</span>
-                <b>Data sharing / consent</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>Why it matters:</b> Many documents authorize verification, background checks, and sharing across agencies/partners.</div>
-              <ul>
-                <li>Pay attention to what data can be collected and who it can be shared with.</li>
-                <li>Look for “consent” language that enables ongoing checks or future reuse.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details data-clause="waiv">
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">WAIV</span>
-                <b>Waivers / limitations</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>Why it matters:</b> Some documents limit challenges, appeals, liability, or remedies.</div>
-              <ul>
-                <li>Look for “waive,” “release,” “limitation,” “no liability,” and “final decision” wording.</li>
-                <li>These sections can narrow options if something goes wrong.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details data-clause="att">
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">ATT</span>
-                <b>Attestations / penalties</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>Why it matters:</b> “Under penalty” language turns statements into sworn claims with consequences.</div>
-              <ul>
-                <li>Common in immigration: statements under penalty of perjury.</li>
-                <li>Check who is signing, what they are certifying, and what documents are being attached.</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </div>
-
-      <!-- Viewer -->
-      <div class="card viewer">
-        <div class="viewerTop">
-          <div class="left">
-            <span class="badge">Viewer</span>
-            <span class="badge" id="viewerDocBadge">No document selected</span>
-            <span class="badge">Highlights: ON</span>
-          </div>
-          <div class="right">
-            <select class="select" id="viewerMode" aria-label="View mode">
-              <option value="single">Single document</option>
-              <option value="compare" disabled>Comparison mode (later)</option>
-            </select>
-            <button class="btn" id="btnToggleHighlights" type="button">🖍️ Toggle Highlights</button>
-            <button class="btn" id="btnJump" type="button">🧾 Jump to Spotlight</button>
-          </div>
-        </div>
-
-        <div class="doc" id="doc">
-          <p class="muted" style="margin-top:2px;">
-            Select a document from the library. This prototype displays a mock excerpt with category highlights
-            (identity, deadlines, fees, data sharing, waivers, attestations).
-          </p>
-
-          <p class="muted">
-            Tip: Use the Search Query box at the top or in the hero section to find likely document names.
+      <div class="heroGrid">
+        <div>
+          <h2>See what matters before you sign.</h2>
+          <p>
+            Pick a document. We highlight the parts that can affect you:
+            deadlines, fees, data sharing, and “you agree” sections.
           </p>
         </div>
+
+        <div>
+          <div class="searchBar" title="Non-functional prototype">
+            <span>🔎</span>
+            <input type="text" placeholder='Search documents (prototype)…' disabled />
+          </div>
+          <div class="searchHint">
+            Examples: “citizenship”, “green card”, “work permit”, “sponsor”, “social security”
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents (front page focus) -->
+    <div class="section">
+      <div class="sectionHead">
+        <div>
+          <b>Immigration documents</b>
+          <span>Most common forms</span>
+        </div>
+        <span class="pill"><span class="dot"></span> Prototype</span>
       </div>
 
+      <div class="docGrid">
+        <div class="docCard" title="UI only">
+          <div class="docTitle">N-400 — Citizenship (Naturalization)</div>
+          <div class="docMeta">
+            <span class="pill">Deadlines</span>
+            <span class="pill">Attestations</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">I-485 — Green Card (Adjust Status)</div>
+          <div class="docMeta">
+            <span class="pill">Fees</span>
+            <span class="pill">Data sharing</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">I-130 — Petition for Family Member</div>
+          <div class="docMeta">
+            <span class="pill">Deadlines</span>
+            <span class="pill">Evidence</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">I-864 — Affidavit of Support (Sponsor)</div>
+          <div class="docMeta">
+            <span class="pill">Obligations</span>
+            <span class="pill">Waivers/limits</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">I-765 — Work Permit (EAD)</div>
+          <div class="docMeta">
+            <span class="pill">Timing</span>
+            <span class="pill">Fees</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">DS-260 — Immigrant Visa (Online)</div>
+          <div class="docMeta">
+            <span class="pill">Data sharing</span>
+            <span class="pill">Attestations</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="footer">
-      Civic Sidekick UI Prototype • Educational transparency • No legal advice • Highlights are category-based, not personal guidance
+    <!-- Optional everyday docs (kept small + simple) -->
+    <div class="section" style="margin-top:14px;">
+      <div class="sectionHead">
+        <div>
+          <b>Everyday documents</b>
+          <span>Common in the U.S.</span>
+        </div>
+        <span class="pill">Fast look</span>
+      </div>
+
+      <div class="docGrid">
+        <div class="docCard" title="UI only">
+          <div class="docTitle">SS-5 — Social Security Card</div>
+          <div class="docMeta">
+            <span class="pill">Identity</span>
+            <span class="pill">Attestations</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">Bank Account Agreement</div>
+          <div class="docMeta">
+            <span class="pill">Fees</span>
+            <span class="pill">Data sharing</span>
+          </div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">Lease Agreement</div>
+          <div class="docMeta">
+            <span class="pill">Deadlines</span>
+            <span class="pill">Fees</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="footerNote">
+      Educational prototype • Not legal advice • The goal is a quick “don’t get surprised” checklist before you sign.
+    </div>
+
   </div>
 
   <script>
-    // -----------------------------
-    // Document library (curated names + mock excerpts)
-    // -----------------------------
-    const LIB = [
-      {
-        id: "N-400",
-        title: "Application for Naturalization",
-        category: "Immigration • Citizenship",
-        tags: ["citizenship", "naturalization", "USCIS", "N-400"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">IDENTITY AND HISTORY.</mark> You must provide your legal name, other names used, date of birth, and address history.`,
-          `2. <mark class="data" data-type="data">CONSENT AND VERIFICATION.</mark> By submitting this application, you authorize verification of information and <mark class="data" data-type="data">background checks</mark> as allowed by law.`,
-          `3. <mark class="dead" data-type="dead">REQUESTS FOR EVIDENCE / DEADLINES.</mark> If the agency requests additional information, you may need to respond <mark class="dead" data-type="dead">within a stated number of days</mark> to avoid delays or closure.`,
-          `4. <mark class="fee" data-type="fee">FEES AND PAYMENTS.</mark> Filing fees may be required and may be <mark class="fee" data-type="fee">nonrefundable</mark> depending on the rules for the submission.`,
-          `5. <mark class="att" data-type="att">ATTESTATION.</mark> You certify under <mark class="att" data-type="att">penalty of perjury</mark> that the information is true and correct to the best of your knowledge.`
-        ]
-      },
-      {
-        id: "I-485",
-        title: "Application to Register Permanent Residence or Adjust Status",
-        category: "Immigration • Permanent Residence",
-        tags: ["green card", "adjust status", "USCIS", "I-485"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">BIOGRAPHIC INFORMATION.</mark> Provide identifiers and immigration history used to assess eligibility.`,
-          `2. <mark class="data" data-type="data">BIOMETRICS / INFORMATION SHARING.</mark> You may be required to provide <mark class="data" data-type="data">biometrics</mark> and authorize checks across records as permitted.`,
-          `3. <mark class="dead" data-type="dead">APPOINTMENTS AND DEADLINES.</mark> Missing appointments or response windows can lead to delays or closure.`,
-          `4. <mark class="fee" data-type="fee">FEES.</mark> Payment rules may include consequences for returned payments and conditions for waivers.`,
-          `5. <mark class="att" data-type="att">SIGNATURE CERTIFICATION.</mark> Signed statements are typically made under penalty of perjury.`
-        ]
-      },
-      {
-        id: "I-130",
-        title: "Petition for Alien Relative",
-        category: "Immigration • Family",
-        tags: ["petition", "spouse", "family", "USCIS", "I-130"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">PETITIONER / BENEFICIARY DETAILS.</mark> Names, dates, and relationship history are required.`,
-          `2. <mark class="data" data-type="data">EVIDENCE AND RECORDS.</mark> You may authorize verification of documents and records.`,
-          `3. <mark class="dead" data-type="dead">NOTICES AND RESPONSE WINDOWS.</mark> Notices may require action by specific dates.`,
-          `4. <mark class="att" data-type="att">ATTESTATION.</mark> You certify the petition contents under penalty of perjury.`
-        ]
-      },
-      {
-        id: "I-864",
-        title: "Affidavit of Support (Financial Sponsorship)",
-        category: "Immigration • Financial Support",
-        tags: ["affidavit", "sponsor", "income", "I-864"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">SPONSOR IDENTITY.</mark> Sponsor information is linked to long-term obligations.`,
-          `2. <mark class="waiv" data-type="waiv">OBLIGATIONS / LIMITATIONS.</mark> This document can create binding financial support obligations under its terms.`,
-          `3. <mark class="data" data-type="data">INCOME VERIFICATION.</mark> Authorizes review/verification of financial information.`,
-          `4. <mark class="att" data-type="att">CERTIFICATION.</mark> Statements are certified under penalty of perjury.`
-        ]
-      },
-      {
-        id: "I-765",
-        title: "Application for Employment Authorization (Work Permit)",
-        category: "Immigration • Work",
-        tags: ["work permit", "EAD", "I-765"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">ELIGIBILITY CATEGORY.</mark> The category selected determines what you are requesting.`,
-          `2. <mark class="dead" data-type="dead">TIMING AND VALIDITY.</mark> Filing windows and validity periods may apply.`,
-          `3. <mark class="fee" data-type="fee">FEES.</mark> Some categories require fees; waivers may have requirements.`,
-          `4. <mark class="att" data-type="att">SIGNATURE.</mark> You certify the application under penalty of perjury.`
-        ]
-      },
-      {
-        id: "DS-260",
-        title: "Immigrant Visa Application (Online)",
-        category: "Immigration • Consular Processing",
-        tags: ["visa", "consular", "DS-260"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">PERSONAL DATA.</mark> Biographic and travel history fields are required.`,
-          `2. <mark class="data" data-type="data">SECURITY / DATA USE.</mark> Consent may cover checks and sharing as permitted.`,
-          `3. <mark class="dead" data-type="dead">SUBMISSION RULES.</mark> Some steps must be completed by certain dates.`,
-          `4. <mark class="att" data-type="att">CERTIFICATION.</mark> Certified under penalty of perjury or equivalent declaration.`
-        ]
-      },
-      {
-        id: "SS-5",
-        title: "Application for a Social Security Card",
-        category: "Everyday • Government",
-        tags: ["social security", "SSN", "SSA", "SS-5"],
-        excerpt: [
-          `1. <mark class="id" data-type="id">IDENTITY.</mark> Requires identity and eligibility information.`,
-          `2. <mark class="data" data-type="data">VERIFICATION.</mark> Information can be checked against records.`,
-          `3. <mark class="att" data-type="att">CERTIFICATION.</mark> You certify the information is true and correct.`
-        ]
-      },
-      {
-        id: "BANK-DEP",
-        title: "Bank Deposit Account Agreement (Checking/Savings Terms)",
-        category: "Everyday • Banking",
-        tags: ["bank", "account", "fees", "overdraft", "agreement"],
-        excerpt: [
-          `1. <mark class="fee" data-type="fee">FEES AND CHARGES.</mark> Account maintenance, overdraft, and service fees may apply.`,
-          `2. <mark class="data" data-type="data">DATA SHARING.</mark> The bank may share data with affiliates and service providers as allowed.`,
-          `3. <mark class="dead" data-type="dead">NOTICES.</mark> Some changes can take effect after notice periods.`,
-          `4. <mark class="waiv" data-type="waiv">LIMITATIONS.</mark> Liability limitations may apply to certain losses.`,
-          `5. <mark class="att" data-type="att">ACKNOWLEDGMENT.</mark> You acknowledge receipt/acceptance of terms.`
-        ]
-      },
-      {
-        id: "LEASE",
-        title: "Residential Lease Agreement (Common Sections)",
-        category: "Everyday • Housing",
-        tags: ["lease", "rent", "notice", "fees"],
-        excerpt: [
-          `1. <mark class="fee" data-type="fee">LATE FEES.</mark> Payments after the due date can trigger fees.`,
-          `2. <mark class="dead" data-type="dead">NOTICE REQUIREMENTS.</mark> Termination or changes may require written notice within deadlines.`,
-          `3. <mark class="waiv" data-type="waiv">LIMITATIONS.</mark> Certain damages may be limited under the lease.`,
-          `4. <mark class="att" data-type="att">SIGNATURES.</mark> Parties acknowledge they read and agree to the terms.`
-        ]
-      }
-    ];
-
-    // Keyword mapping to “search query -> likely documents”
-    const KEYMAP = [
-      { keys: ["citizen", "citizenship", "naturalize", "naturalization", "n-400"], hits: ["N-400"] },
-      { keys: ["green card", "adjust status", "permanent resident", "i-485"], hits: ["I-485"] },
-      { keys: ["sponsor", "affidavit", "support", "i-864"], hits: ["I-864"] },
-      { keys: ["spouse", "family", "petition", "i-130"], hits: ["I-130"] },
-      { keys: ["work permit", "employment authorization", "ead", "i-765"], hits: ["I-765"] },
-      { keys: ["immigrant visa", "consular", "ds-260"], hits: ["DS-260"] },
-      { keys: ["social security", "ssn", "ss-5"], hits: ["SS-5"] },
-      { keys: ["bank", "checking", "savings", "deposit account"], hits: ["BANK-DEP"] },
-      { keys: ["lease", "rent", "apartment"], hits: ["LEASE"] }
-    ];
-
-    // -----------------------------
-    // UI state
-    // -----------------------------
-    const catalogEl = document.getElementById("catalog");
-    const docEl = document.getElementById("doc");
-    const viewerDocBadge = document.getElementById("viewerDocBadge");
-    const globalSearch = document.getElementById("globalSearch");
-    const queryInput = document.getElementById("queryInput");
-
-    let highlightsEnabled = true;
-
-    // Switches: toggle visibility by mark[data-type]
-    const switches = document.querySelectorAll(".switch");
-
-    function setTypeVisibility(type, on){
-      const marks = document.querySelectorAll(`mark[data-type="${type}"]`);
-      marks.forEach(m => {
-        if(!highlightsEnabled){
-          m.style.opacity = "1";
-          m.style.filter = "none";
-          return;
-        }
-        m.style.opacity = on ? "1" : "0.18";
-        m.style.filter = on ? "none" : "grayscale(0.6)";
-      });
-    }
-
-    function applyAllSwitches(){
-      switches.forEach(sw => {
-        const type = sw.dataset.switch;
-        const on = sw.classList.contains("on");
-        setTypeVisibility(type, on);
-      });
-    }
-
-    switches.forEach(sw => {
-      sw.addEventListener("click", () => {
-        sw.classList.toggle("on");
-        const on = sw.classList.contains("on");
-        sw.setAttribute("aria-checked", on ? "true" : "false");
-        applyAllSwitches();
-      });
-    });
-
-    // -----------------------------
-    // Render catalog
-    // -----------------------------
-    function renderCatalog(items){
-      catalogEl.innerHTML = "";
-      if(!items.length){
-        catalogEl.innerHTML = `
-          <div class="docCard" style="cursor:default;">
-            <div class="docTop">
-              <div>
-                <b>No matches found</b>
-                <div class="docMeta">
-                  <span class="metaPill">Try different keywords</span>
-                  <span class="metaPill">Example: “green card”, “work permit”, “bank account”</span>
-                </div>
-              </div>
-              <span class="code">—</span>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      items.forEach(d => {
-        const tags = d.tags.slice(0,4).map(t => `<span class="metaPill">${escapeHtml(t)}</span>`).join("");
-        const card = document.createElement("div");
-        card.className = "docCard";
-        card.innerHTML = `
-          <div class="docTop">
-            <div>
-              <b>${escapeHtml(d.title)}</b>
-              <div class="docMeta">
-                <span class="metaPill">${escapeHtml(d.category)}</span>
-                ${tags}
-              </div>
-            </div>
-            <span class="code">${escapeHtml(d.id)}</span>
-          </div>
-        `;
-        card.addEventListener("click", () => loadDoc(d.id));
-        catalogEl.appendChild(card);
-      });
-    }
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    // -----------------------------
-    // Viewer load
-    // -----------------------------
-    function loadDoc(id){
-      const d = LIB.find(x => x.id === id);
-      if(!d) return;
-
-      viewerDocBadge.textContent = `${d.id} • ${d.title}`;
-
-      const para = d.excerpt.map(line => `<p>${line}</p>`).join("");
-      docEl.innerHTML = `
-        <p class="muted" style="margin-top:2px;">
-          <b>Mock excerpt</b> for educational highlighting. This is not legal advice.
-        </p>
-        ${para}
-        <p class="muted">
-          Spotlight goal: make “small print” visible—deadlines, fees, data-use consent, waivers/limitations, and attestations.
-        </p>
-      `;
-
-      applyAllSwitches();
-    }
-
-    // -----------------------------
-    // Search query -> library hits
-    // -----------------------------
-    function runQuery(q){
-      const query = (q || "").toLowerCase().trim();
-      if(!query) return [];
-
-      const hitIds = new Set();
-      KEYMAP.forEach(rule => {
-        if(rule.keys.some(k => query.includes(k))){
-          rule.hits.forEach(h => hitIds.add(h));
-        }
-      });
-
-      // If no direct rules matched, fallback to general tag/title matching
-      if(hitIds.size === 0){
-        return filterLibrary(query);
-      }
-
-      return LIB.filter(d => hitIds.has(d.id));
-    }
-
-    function filterLibrary(q){
-      const query = (q || "").toLowerCase().trim();
-      if(!query) return LIB.slice();
-
-      return LIB.filter(d => {
-        const hay = `${d.id} ${d.title} ${d.category} ${d.tags.join(" ")}`.toLowerCase();
-        return hay.includes(query);
-      });
-    }
-
-    // -----------------------------
-    // Buttons / inputs
-    // -----------------------------
-    document.getElementById("btnSearch").addEventListener("click", () => {
-      const q = queryInput.value;
-      const results = runQuery(q);
-      renderCatalog(results);
-      if(results[0]) loadDoc(results[0].id);
-    });
-
-    document.getElementById("btnRunQuery").addEventListener("click", () => {
-      const q = queryInput.value;
-      const results = runQuery(q);
-      renderCatalog(results);
-      if(results[0]) loadDoc(results[0].id);
-    });
-
-    document.getElementById("btnClear").addEventListener("click", () => {
-      queryInput.value = "";
-      renderCatalog(LIB);
-      viewerDocBadge.textContent = "No document selected";
-      docEl.innerHTML = `
-        <p class="muted" style="margin-top:2px;">
-          Select a document from the library. This prototype displays a mock excerpt with category highlights.
-        </p>
-        <p class="muted">
-          Tip: Search examples — “apply for citizenship”, “green card”, “affidavit of support”, “work permit”, “social security card”
-        </p>
-      `;
-    });
-
-    document.getElementById("btnResetCatalog").addEventListener("click", () => {
-      renderCatalog(LIB);
-    });
-
-    document.getElementById("btnLoadExample").addEventListener("click", () => {
-      renderCatalog(LIB);
-      loadDoc("N-400");
-    });
-
-    document.getElementById("btnToggleHighlights").addEventListener("click", () => {
-      highlightsEnabled = !highlightsEnabled;
-      // When highlights disabled, show marks normally (no dimming)
-      applyAllSwitches();
-      const badge = document.querySelectorAll(".viewerTop .left .badge")[2];
-      badge.textContent = highlightsEnabled ? "Highlights: ON" : "Highlights: OFF";
-    });
-
-    document.getElementById("btnJump").addEventListener("click", () => {
-      const panel = document.getElementById("clausePanel");
-      panel.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    document.getElementById("btnExpandAll").addEventListener("click", () => {
-      document.querySelectorAll("#clausePanel details").forEach(d => d.open = true);
-      document.getElementById("clausePanel").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    document.getElementById("btnAbout").addEventListener("click", () => {
-      alert(
-        "Civic Sidekick (Prototype)\n\n" +
-        "Purpose: help people identify common document names (especially immigration forms) and spotlight clause categories that can impact them.\n\n" +
-        "This does NOT provide legal advice or interpret a user’s specific situation."
-      );
-    });
-
-    // Global search bar filters catalog
-    globalSearch.addEventListener("input", () => {
-      const q = globalSearch.value;
-      renderCatalog(filterLibrary(q));
-    });
-
-    // Ctrl+K focus
-    window.addEventListener("keydown", (e) => {
-      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
-        e.preventDefault();
-        globalSearch.focus();
-      }
-    });
-
-    // Initial render
-    renderCatalog(LIB);
+    // Intentionally minimal (prototype front page only).
+    // Later: clicking a document can open a viewer page with highlights.
   </script>
 </body>
 </html>
