@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FairAI — Educational Legal Document Transparency</title>
+  <title>Civic Sidekick — Common Document Finder + Clause Spotlight (Educational)</title>
+
   <style>
     :root{
       --bg: #0b0f17;
@@ -22,12 +23,13 @@
       --warn:#ffcc66;
       --bad:#ff5c7a;
 
-      --hl-arb: rgba(124,92,255,0.28);
-      --hl-fee: rgba(255,204,102,0.26);
-      --hl-ren: rgba(24,193,255,0.22);
-      --hl-waiv: rgba(255,92,122,0.22);
-      --hl-term: rgba(53,208,127,0.20);
-      --hl-rent: rgba(255,255,255,0.14);
+      --hl-id: rgba(124,92,255,0.28);     /* Identity / declarations */
+      --hl-dead: rgba(255,204,102,0.26);  /* Deadlines / notices */
+      --hl-fee: rgba(24,193,255,0.22);    /* Fees / billing */
+      --hl-data: rgba(255,92,122,0.22);   /* Data sharing / consent */
+      --hl-waiv: rgba(53,208,127,0.20);   /* Waivers / limitations */
+      --hl-att: rgba(255,255,255,0.14);   /* Attestations / penalties */
+
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
@@ -72,7 +74,7 @@
       display:flex;
       align-items:center;
       gap:12px;
-      min-width: 210px;
+      min-width: 260px;
     }
     .logo{
       width:38px;height:38px;border-radius: 12px;
@@ -107,7 +109,7 @@
       border:1px solid var(--border);
       border-radius: 999px;
       background: rgba(0,0,0,0.18);
-      min-width: 200px;
+      min-width: 240px;
     }
     .search input{
       width:100%;
@@ -220,7 +222,7 @@
       color: var(--muted);
       line-height:1.45;
       font-size:13.5px;
-      max-width: 62ch;
+      max-width: 70ch;
     }
 
     .banner{
@@ -251,8 +253,8 @@
       background: rgba(255,255,255,0.05);
     }
 
-    /* Upload */
-    .uploadZone{
+    /* “Search query” zone */
+    .queryZone{
       margin-top:16px;
       border:1.5px dashed rgba(255,255,255,0.18);
       background: rgba(0,0,0,0.18);
@@ -263,44 +265,51 @@
       justify-content:space-between;
       gap:12px;
     }
-    .uploadLeft{
+    .queryLeft{
       display:flex;
       gap:12px;
       align-items:flex-start;
     }
-    .uploadIcon{
+    .queryIcon{
       width:40px;height:40px;border-radius: 14px;
       display:grid;place-items:center;
       background: rgba(255,255,255,0.06);
       border:1px solid rgba(255,255,255,0.12);
       font-family: var(--mono);
     }
-    .uploadLeft h3{
+    .queryLeft h3{
       margin:0 0 4px;
       font-size:14px;
     }
-    .uploadLeft p{
+    .queryLeft p{
       margin:0;
       color: var(--muted);
       font-size:12.5px;
       line-height:1.35;
+      max-width: 70ch;
     }
-
-    .uploadRight{
+    .queryRight{
       display:flex;
       gap:10px;
       align-items:center;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
-    .fakeInput{
+    .queryInput{
       border:1px solid rgba(255,255,255,0.14);
       background: rgba(255,255,255,0.05);
       padding:10px 12px;
       border-radius: 14px;
-      color: rgba(255,255,255,0.70);
+      color: rgba(255,255,255,0.90);
       font-size:12.5px;
-      min-width: 210px;
+      min-width: 280px;
+      outline:none;
+    }
+    .miniNote{
+      color: var(--muted2);
+      font-size:12px;
+      margin-top:10px;
+      line-height:1.35;
     }
 
     /* Sidebar */
@@ -417,48 +426,65 @@
       font-size:12px;
     }
 
-    /* Readability panel */
-    .metrics{
-      padding:14px 18px 18px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
+    /* Catalog list */
+    .catalog{
+      padding: 14px 18px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
     }
-    .metric{
+    .docCard{
       border:1px solid rgba(255,255,255,0.12);
       background: rgba(0,0,0,0.18);
       border-radius: 16px;
       padding:12px;
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease, transform .05s ease;
     }
-    .metric .top{
+    .docCard:hover{
+      background: rgba(0,0,0,0.22);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .docCard:active{ transform: translateY(1px); }
+    .docTop{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
-      margin-bottom:10px;
+      gap:12px;
     }
-    .metric .top span{
+    .docTop b{
+      font-size:13px;
+      display:block;
+      line-height:1.2;
+    }
+    .docTop .code{
+      font-family: var(--mono);
+      font-size:11px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.75);
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+    .docMeta{
+      margin-top:8px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
       color: var(--muted);
       font-size:12px;
+      line-height:1.35;
     }
-    .metric .value{
-      font-size:22px;
-      font-weight:700;
-      letter-spacing:0.2px;
-    }
-    .bar{
-      height:8px;
+    .metaPill{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
       border-radius: 999px;
-      background: rgba(255,255,255,0.07);
-      overflow:hidden;
-      margin-top:10px;
-      border:1px solid rgba(255,255,255,0.10);
+      padding:6px 10px;
     }
-    .bar > div{
-      height:100%;
-      width: 62%;
-      background: linear-gradient(90deg, rgba(124,92,255,0.95), rgba(24,193,255,0.85));
-      border-radius: 999px;
-    }
+
+    /* Highlights legend */
     .legend{
       display:flex;
       flex-wrap:wrap;
@@ -478,14 +504,14 @@
       user-select:none;
     }
     .sw{ width:10px;height:10px;border-radius:3px; }
-    .sw.arb{ background: var(--hl-arb); border:1px solid rgba(124,92,255,0.45); }
-    .sw.fee{ background: var(--hl-fee); border:1px solid rgba(255,204,102,0.45); }
-    .sw.ren{ background: var(--hl-ren); border:1px solid rgba(24,193,255,0.45); }
-    .sw.waiv{ background: var(--hl-waiv); border:1px solid rgba(255,92,122,0.45); }
-    .sw.term{ background: var(--hl-term); border:1px solid rgba(53,208,127,0.45); }
-    .sw.rent{ background: var(--hl-rent); border:1px solid rgba(255,255,255,0.20); }
+    .sw.id{ background: var(--hl-id); border:1px solid rgba(124,92,255,0.45); }
+    .sw.dead{ background: var(--hl-dead); border:1px solid rgba(255,204,102,0.45); }
+    .sw.fee{ background: var(--hl-fee); border:1px solid rgba(24,193,255,0.45); }
+    .sw.data{ background: var(--hl-data); border:1px solid rgba(255,92,122,0.45); }
+    .sw.waiv{ background: var(--hl-waiv); border:1px solid rgba(53,208,127,0.45); }
+    .sw.att{ background: var(--hl-att); border:1px solid rgba(255,255,255,0.20); }
 
-    /* Document viewer mock */
+    /* Viewer */
     .viewer{
       padding: 0 0 16px;
     }
@@ -498,7 +524,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .viewerTop .left{
-      display:flex; gap:10px; align-items:center;
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
     }
     .badge{
       font-family: var(--mono);
@@ -523,10 +549,9 @@
       font-size:12.5px;
       outline:none;
     }
-
     .doc{
       padding: 14px 18px 0;
-      max-height: 520px;
+      max-height: 560px;
       overflow:auto;
     }
     .doc p{
@@ -535,9 +560,7 @@
       line-height:1.55;
       font-size:13.5px;
     }
-    .doc .muted{
-      color: var(--muted);
-    }
+    .doc .muted{ color: var(--muted); }
 
     mark{
       padding:2px 4px;
@@ -545,14 +568,14 @@
       border:1px solid rgba(255,255,255,0.10);
       color: rgba(255,255,255,0.92);
     }
-    mark.arb{ background: var(--hl-arb); }
+    mark.id{ background: var(--hl-id); }
+    mark.dead{ background: var(--hl-dead); }
     mark.fee{ background: var(--hl-fee); }
-    mark.ren{ background: var(--hl-ren); }
+    mark.data{ background: var(--hl-data); }
     mark.waiv{ background: var(--hl-waiv); }
-    mark.term{ background: var(--hl-term); }
-    mark.rent{ background: var(--hl-rent); }
+    mark.att{ background: var(--hl-att); }
 
-    /* Clause explanations panel */
+    /* Clause panel */
     .clauses{
       padding: 14px 18px 18px;
       display:flex;
@@ -611,45 +634,6 @@
     }
     .impact li{ margin: 6px 0; }
 
-    /* Comparison mode */
-    .compare{
-      padding: 14px 18px 18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .compareGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    .miniUpload{
-      border:1.5px dashed rgba(255,255,255,0.18);
-      background: rgba(0,0,0,0.18);
-      border-radius: 16px;
-      padding:12px;
-      min-height: 98px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .miniUpload b{
-      font-size:12.5px;
-    }
-    .miniUpload .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-    .hint{
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-
     /* Footer */
     .footer{
       margin-top:18px;
@@ -676,14 +660,14 @@
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <div>
-          <h1>FairAI</h1>
-          <p>Educational clause transparency (not legal advice)</p>
+          <h1>Civic Sidekick</h1>
+          <p>Common document finder + clause spotlight (educational)</p>
         </div>
       </div>
 
-      <div class="search" title="Search within the viewer (placeholder)">
+      <div class="search" title="Search the document catalog">
         <span style="opacity:.75;">🔎</span>
-        <input type="text" placeholder="Search document text (placeholder UI)"/>
+        <input id="globalSearch" type="text" placeholder='Search: "N-400", "Affidavit of Support", "bank account", "SS-5"...'/>
         <span class="kbd">Ctrl K</span>
       </div>
 
@@ -692,8 +676,8 @@
           <span class="dot"></span>
           UI Prototype
         </div>
-        <button class="btn" type="button">⚙️ Settings</button>
-        <button class="btn primary" type="button">✨ “Scan” Document</button>
+        <button class="btn" id="btnAbout" type="button">ℹ️ About</button>
+        <button class="btn primary" id="btnRunQuery" type="button">🔍 Run Search Query</button>
       </div>
     </div>
 
@@ -703,95 +687,102 @@
       <div class="card heroMain">
         <div class="heroTitle">
           <div>
-            <h2>Understand common legal structures without summarization.</h2>
+            <h2>Find the document name first. Then spotlight the parts that can actually impact someone.</h2>
             <p>
-              Upload a lease, contract, or terms of service. This prototype highlights common clause
-              <span class="muted">(types only)</span> and shows pre-approved educational explanations.
+              This prototype focuses on identifying <span class="muted">common legal document names</span> people are asked to sign in the U.S.—
+              with a strong focus on <b>immigration</b> and the path to becoming a legal resident/citizen. It highlights
+              clause categories that often carry real consequences (deadlines, attestations, data sharing, fees).
             </p>
           </div>
-          <button class="btn" type="button" title="UI only">📄 Sample Doc</button>
+          <button class="btn" id="btnLoadExample" type="button" title="Loads a sample from the catalog">📄 Load Example</button>
         </div>
 
         <div class="banner">
           <div class="pill"><span class="tag">NO</span> <b>legal advice</b></div>
           <div class="pill"><span class="tag">NO</span> <b>document-specific interpretation</b></div>
-          <div class="pill"><span class="tag">YES</span> <b>readability metrics</b></div>
-          <div class="pill"><span class="tag">YES</span> <b>clause-type highlights</b></div>
+          <div class="pill"><span class="tag">YES</span> <b>document-name discovery</b></div>
+          <div class="pill"><span class="tag">YES</span> <b>clause-category highlights</b></div>
         </div>
 
-        <div class="uploadZone">
-          <div class="uploadLeft">
-            <div class="uploadIcon" aria-hidden="true">PDF</div>
+        <div class="queryZone">
+          <div class="queryLeft">
+            <div class="queryIcon" aria-hidden="true">QRY</div>
             <div>
-              <h3>Upload a document</h3>
-              <p>Drag & drop a PDF/DOCX, or select a file. (Buttons are non-functional in this prototype.)</p>
+              <h3>Search Query (library lookup)</h3>
+              <p>
+                Type what someone would say in real life—then this tool returns likely document names (forms, agreements, notices).
+                You’re not “uploading to an AI.” You’re searching a curated library of common documents.
+              </p>
+              <div class="miniNote">
+                Examples: “apply for citizenship”, “green card”, “sponsor my spouse”, “work permit”, “social security card”, “open bank account”
+              </div>
             </div>
           </div>
-          <div class="uploadRight">
-            <div class="fakeInput" aria-hidden="true">No file selected</div>
-            <button class="btn" type="button">Browse</button>
-            <button class="btn primary" type="button">Upload</button>
+          <div class="queryRight">
+            <input id="queryInput" class="queryInput" type="text" value="apply for citizenship (naturalization)" />
+            <button class="btn" id="btnClear" type="button">🧹 Clear</button>
+            <button class="btn primary" id="btnSearch" type="button">Search</button>
           </div>
         </div>
       </div>
 
       <div class="card heroSide">
         <div class="sideTitle">
-          <h3>Detection Filters</h3>
+          <h3>Highlight Filters</h3>
           <span>UI-only</span>
         </div>
 
         <div class="toggleRow">
           <div class="label">
-            <b>Arbitration clauses</b>
-            <small>Often restricts court access</small>
+            <b>Identity / declarations</b>
+            <small>Names, status, required facts</small>
           </div>
-          <div class="switch on" data-switch="arb" role="switch" aria-checked="true"></div>
+          <div class="switch on" data-switch="id" role="switch" aria-checked="true"></div>
         </div>
 
         <div class="toggleRow">
           <div class="label">
-            <b>Late fees & penalties</b>
-            <small>Fees triggered by timing</small>
+            <b>Deadlines / notices</b>
+            <small>Timing rules, missed-date risk</small>
+          </div>
+          <div class="switch on" data-switch="dead" role="switch" aria-checked="true"></div>
+        </div>
+
+        <div class="toggleRow">
+          <div class="label">
+            <b>Fees / payments</b>
+            <small>Costs, refunds, billing rules</small>
           </div>
           <div class="switch on" data-switch="fee" role="switch" aria-checked="true"></div>
         </div>
 
         <div class="toggleRow">
           <div class="label">
-            <b>Auto renewal</b>
-            <small>Renews unless canceled</small>
+            <b>Data sharing / consent</b>
+            <small>Info release, checks, agencies</small>
           </div>
-          <div class="switch on" data-switch="ren" role="switch" aria-checked="true"></div>
+          <div class="switch on" data-switch="data" role="switch" aria-checked="true"></div>
         </div>
 
         <div class="toggleRow">
           <div class="label">
-            <b>Termination conditions</b>
-            <small>Exit rules & notice</small>
-          </div>
-          <div class="switch on" data-switch="term" role="switch" aria-checked="true"></div>
-        </div>
-
-        <div class="toggleRow">
-          <div class="label">
-            <b>Liability waivers</b>
-            <small>Limits responsibility</small>
+            <b>Waivers / limitations</b>
+            <small>Limits, rights, appeal constraints</small>
           </div>
           <div class="switch on" data-switch="waiv" role="switch" aria-checked="true"></div>
         </div>
 
         <div class="toggleRow">
           <div class="label">
-            <b>Rent increases</b>
-            <small>Increases & timing</small>
+            <b>Attestations / penalties</b>
+            <small>Sworn statements, consequences</small>
           </div>
-          <div class="switch on" data-switch="rent" role="switch" aria-checked="true"></div>
+          <div class="switch on" data-switch="att" role="switch" aria-checked="true"></div>
         </div>
 
         <div class="fineprint">
-          <b>Disclosure:</b> This is an educational prototype. It highlights clause <b>types</b> and displays
-          generic explanations. It does not provide legal advice or interpret your document.
+          <b>Disclosure:</b> Educational prototype. It identifies common document names and highlights clause <b>categories</b>.
+          It does not interpret your situation or provide legal advice.
         </div>
       </div>
 
@@ -800,283 +791,341 @@
     <!-- Main Grid -->
     <div class="grid">
 
-      <!-- Readability & Clause Explanations -->
+      <!-- Catalog + Explanations -->
       <div class="card">
         <div class="sectionHead">
           <div>
-            <h3>Readability Dashboard</h3>
-            <p>Objective metrics (placeholder values)</p>
+            <h3>Document Library</h3>
+            <p>Search results + common immigration & “life-in-America” documents</p>
           </div>
-          <button class="btn" type="button">⬇️ Export Report</button>
+          <button class="btn" id="btnResetCatalog" type="button">↩️ Reset</button>
         </div>
 
-        <div class="metrics">
-          <div class="metric">
-            <div class="top"><span>Grade level</span><span class="chipTag">Flesch-Kincaid</span></div>
-            <div class="value">12.8</div>
-            <div class="bar"><div style="width:78%"></div></div>
-          </div>
-
-          <div class="metric">
-            <div class="top"><span>Avg sentence length</span><span class="chipTag">words</span></div>
-            <div class="value">27</div>
-            <div class="bar"><div style="width:64%"></div></div>
-          </div>
-
-          <div class="metric">
-            <div class="top"><span>Passive voice</span><span class="chipTag">frequency</span></div>
-            <div class="value">18%</div>
-            <div class="bar"><div style="width:36%"></div></div>
-          </div>
-
-          <div class="metric">
-            <div class="top"><span>Legal jargon density</span><span class="chipTag">terms / 1k</span></div>
-            <div class="value">42</div>
-            <div class="bar"><div style="width:58%"></div></div>
-          </div>
+        <div class="catalog" id="catalog">
+          <!-- Filled by JS -->
         </div>
 
         <div class="legend">
-          <div class="lg"><span class="sw arb"></span> Arbitration</div>
-          <div class="lg"><span class="sw fee"></span> Late fees</div>
-          <div class="lg"><span class="sw ren"></span> Auto renewal</div>
-          <div class="lg"><span class="sw term"></span> Termination</div>
-          <div class="lg"><span class="sw waiv"></span> Liability waiver</div>
-          <div class="lg"><span class="sw rent"></span> Rent increase</div>
+          <div class="lg"><span class="sw id"></span> Identity / declarations</div>
+          <div class="lg"><span class="sw dead"></span> Deadlines / notices</div>
+          <div class="lg"><span class="sw fee"></span> Fees / payments</div>
+          <div class="lg"><span class="sw data"></span> Data sharing / consent</div>
+          <div class="lg"><span class="sw waiv"></span> Waivers / limitations</div>
+          <div class="lg"><span class="sw att"></span> Attestations / penalties</div>
         </div>
 
         <div class="sectionHead" style="border-top:1px solid rgba(255,255,255,0.08); border-bottom:none;">
           <div>
-            <h3>Detected Clause Types</h3>
-            <p>Generic, pre-approved explanations (mock)</p>
+            <h3>Clause Spotlight Library</h3>
+            <p>Pre-written educational explanations (category-based)</p>
           </div>
-          <button class="btn" type="button">🧩 Manage Library</button>
+          <button class="btn" id="btnExpandAll" type="button">⬇️ Expand</button>
         </div>
 
-        <div class="clauses">
-          <details open>
+        <div class="clauses" id="clausePanel">
+          <details open data-clause="id">
             <summary>
               <div class="sumLeft">
-                <span class="chipTag">ARB</span>
-                <b>Arbitration requirement</b>
+                <span class="chipTag">ID</span>
+                <b>Identity / declarations</b>
               </div>
               <span class="kbd">See</span>
             </summary>
             <div class="impact">
-              <div><b>What it usually means:</b> Disputes are typically resolved through arbitration instead of court.</div>
+              <div><b>Why it matters:</b> These sections lock in names, dates, status, and factual statements that the document relies on.</div>
               <ul>
-                <li>May limit the ability to sue in court or participate in class actions.</li>
-                <li>May require disputes to be handled privately with an arbitrator.</li>
+                <li>Mismatches can cause delays, denials, or repeated requests for evidence.</li>
+                <li>Names/IDs can follow you across agencies; errors can be hard to unwind.</li>
               </ul>
             </div>
           </details>
 
-          <details>
+          <details data-clause="dead">
+            <summary>
+              <div class="sumLeft">
+                <span class="chipTag">DEAD</span>
+                <b>Deadlines / notices</b>
+              </div>
+              <span class="kbd">See</span>
+            </summary>
+            <div class="impact">
+              <div><b>Why it matters:</b> Timing rules can create “automatic” consequences if a date is missed.</div>
+              <ul>
+                <li>Watch for response windows (e.g., “within X days”), mailing rules, and when a clock starts.</li>
+                <li>Some deadlines can trigger fees, loss of benefits, or restarting a process.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details data-clause="fee">
             <summary>
               <div class="sumLeft">
                 <span class="chipTag">FEE</span>
-                <b>Late fees / penalty language</b>
+                <b>Fees / payments</b>
               </div>
               <span class="kbd">See</span>
             </summary>
             <div class="impact">
-              <div><b>What it usually means:</b> Payments after a specified date may trigger fees or penalties.</div>
+              <div><b>Why it matters:</b> Fees can be nonrefundable, conditional, or tied to specific submission steps.</div>
               <ul>
-                <li>May add a flat fee and/or daily interest-like charges.</li>
-                <li>May create additional consequences after repeated late payments.</li>
+                <li>Look for refund rules, “returned” payment consequences, and fee waiver requirements.</li>
+                <li>Costs can be split across multiple forms (filing + biometrics + copies + translations).</li>
               </ul>
             </div>
           </details>
 
-          <details>
+          <details data-clause="data">
             <summary>
               <div class="sumLeft">
-                <span class="chipTag">REN</span>
-                <b>Automatic renewal</b>
+                <span class="chipTag">DATA</span>
+                <b>Data sharing / consent</b>
               </div>
               <span class="kbd">See</span>
             </summary>
             <div class="impact">
-              <div><b>What it usually means:</b> The agreement renews unless you cancel within a notice period.</div>
+              <div><b>Why it matters:</b> Many documents authorize verification, background checks, and sharing across agencies/partners.</div>
               <ul>
-                <li>May require cancellation before a deadline (e.g., 30 days notice).</li>
-                <li>May continue billing or obligations into a new term.</li>
+                <li>Pay attention to what data can be collected and who it can be shared with.</li>
+                <li>Look for “consent” language that enables ongoing checks or future reuse.</li>
               </ul>
             </div>
           </details>
 
-          <details>
-            <summary>
-              <div class="sumLeft">
-                <span class="chipTag">TERM</span>
-                <b>Termination conditions</b>
-              </div>
-              <span class="kbd">See</span>
-            </summary>
-            <div class="impact">
-              <div><b>What it usually means:</b> Rules for ending the agreement (notice, fees, causes).</div>
-              <ul>
-                <li>May impose fees for early termination.</li>
-                <li>May require written notice and specific delivery methods.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details>
+          <details data-clause="waiv">
             <summary>
               <div class="sumLeft">
                 <span class="chipTag">WAIV</span>
-                <b>Liability waiver / limitation</b>
+                <b>Waivers / limitations</b>
               </div>
               <span class="kbd">See</span>
             </summary>
             <div class="impact">
-              <div><b>What it usually means:</b> Limits responsibility for damages under certain conditions.</div>
+              <div><b>Why it matters:</b> Some documents limit challenges, appeals, liability, or remedies.</div>
               <ul>
-                <li>May reduce compensation available for certain losses.</li>
-                <li>May exclude indirect, incidental, or consequential damages.</li>
+                <li>Look for “waive,” “release,” “limitation,” “no liability,” and “final decision” wording.</li>
+                <li>These sections can narrow options if something goes wrong.</li>
               </ul>
             </div>
           </details>
 
-          <details>
+          <details data-clause="att">
             <summary>
               <div class="sumLeft">
-                <span class="chipTag">RENT</span>
-                <b>Rent increase notice</b>
+                <span class="chipTag">ATT</span>
+                <b>Attestations / penalties</b>
               </div>
               <span class="kbd">See</span>
             </summary>
             <div class="impact">
-              <div><b>What it usually means:</b> Describes if/when rent can change and how notice is given.</div>
+              <div><b>Why it matters:</b> “Under penalty” language turns statements into sworn claims with consequences.</div>
               <ul>
-                <li>May allow increases after a set term or with written notice.</li>
-                <li>May specify timing, delivery, and effective dates.</li>
+                <li>Common in immigration: statements under penalty of perjury.</li>
+                <li>Check who is signing, what they are certifying, and what documents are being attached.</li>
               </ul>
             </div>
           </details>
         </div>
       </div>
 
-      <!-- Document Viewer & Comparison Mode -->
+      <!-- Viewer -->
       <div class="card viewer">
         <div class="viewerTop">
           <div class="left">
             <span class="badge">Viewer</span>
+            <span class="badge" id="viewerDocBadge">No document selected</span>
             <span class="badge">Highlights: ON</span>
-            <span class="badge">Explanations: ON</span>
           </div>
           <div class="right">
-            <select class="select" aria-label="View mode">
-              <option>Single document</option>
-              <option>Comparison mode</option>
+            <select class="select" id="viewerMode" aria-label="View mode">
+              <option value="single">Single document</option>
+              <option value="compare" disabled>Comparison mode (later)</option>
             </select>
-            <button class="btn" type="button">🖍️ Toggle Highlights</button>
-            <button class="btn" type="button">🧾 Jump to Clause</button>
+            <button class="btn" id="btnToggleHighlights" type="button">🖍️ Toggle Highlights</button>
+            <button class="btn" id="btnJump" type="button">🧾 Jump to Spotlight</button>
           </div>
         </div>
 
         <div class="doc" id="doc">
           <p class="muted" style="margin-top:2px;">
-            This is mock content to show how highlights will look after detection.
-            Replace with real extracted text later.
-          </p>
-
-          <p>
-            12. <mark class="arb" data-type="arb">DISPUTE RESOLUTION AND ARBITRATION.</mark> Any dispute arising out of or relating
-            to this Agreement shall be resolved by binding arbitration administered by a mutually agreed arbitrator.
-            The parties waive any right to a trial by jury and agree that arbitration shall be the exclusive forum.
-          </p>
-
-          <p>
-            6. <mark class="fee" data-type="fee">LATE FEES.</mark> If payment is not received within five (5) days of the due date,
-            a late fee may be assessed. Additional charges may apply for repeated late payments or returned payments.
-          </p>
-
-          <p>
-            9. <mark class="ren" data-type="ren">AUTOMATIC RENEWAL.</mark> This Agreement will renew for successive terms unless
-            either party provides written notice of non-renewal at least thirty (30) days before the end of the current term.
-          </p>
-
-          <p>
-            14. <mark class="term" data-type="term">TERMINATION.</mark> Either party may terminate this Agreement upon written notice
-            as described herein. Early termination may result in fees, and termination procedures may require specific delivery.
-          </p>
-
-          <p>
-            18. <mark class="waiv" data-type="waiv">LIMITATION OF LIABILITY.</mark> To the maximum extent permitted by law,
-            the provider shall not be liable for indirect, incidental, special, consequential, or punitive damages.
-          </p>
-
-          <p>
-            4. <mark class="rent" data-type="rent">RENT INCREASES.</mark> Rent may be increased following the initial term with written
-            notice provided in accordance with the notice requirements of this Agreement.
+            Select a document from the library. This prototype displays a mock excerpt with category highlights
+            (identity, deadlines, fees, data sharing, waivers, attestations).
           </p>
 
           <p class="muted">
-            End of mock preview. In the real version, the viewer would show your document text, with highlights mapped to detected spans.
+            Tip: Use the Search Query box at the top or in the hero section to find likely document names.
           </p>
-        </div>
-
-        <div class="sectionHead" style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.08);">
-          <div>
-            <h3>Comparison Mode</h3>
-            <p>Compare old vs. new documents (UI only)</p>
-          </div>
-          <button class="btn primary" type="button">🔍 Compare</button>
-        </div>
-
-        <div class="compare">
-          <div class="compareGrid">
-            <div class="miniUpload">
-              <div>
-                <b>Document A (Old)</b>
-                <div class="hint">Upload or drag a file here.</div>
-              </div>
-              <div class="row">
-                <span class="badge">A.pdf</span>
-                <button class="btn" type="button">Browse</button>
-              </div>
-            </div>
-
-            <div class="miniUpload">
-              <div>
-                <b>Document B (New)</b>
-                <div class="hint">Upload or drag a file here.</div>
-              </div>
-              <div class="row">
-                <span class="badge">B.pdf</span>
-                <button class="btn" type="button">Browse</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="fineprint">
-            <b>How it would work (later):</b> The system highlights changes between documents and flags newly added clause types.
-            This prototype only shows layout and controls.
-          </div>
         </div>
       </div>
 
     </div>
 
     <div class="footer">
-      FairAI UI Prototype • Educational transparency • No legal advice • No document-specific interpretation
+      Civic Sidekick UI Prototype • Educational transparency • No legal advice • Highlights are category-based, not personal guidance
     </div>
   </div>
 
   <script>
-    // UI-only interactions: switches toggle highlight visibility by clause type.
+    // -----------------------------
+    // Document library (curated names + mock excerpts)
+    // -----------------------------
+    const LIB = [
+      {
+        id: "N-400",
+        title: "Application for Naturalization",
+        category: "Immigration • Citizenship",
+        tags: ["citizenship", "naturalization", "USCIS", "N-400"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">IDENTITY AND HISTORY.</mark> You must provide your legal name, other names used, date of birth, and address history.`,
+          `2. <mark class="data" data-type="data">CONSENT AND VERIFICATION.</mark> By submitting this application, you authorize verification of information and <mark class="data" data-type="data">background checks</mark> as allowed by law.`,
+          `3. <mark class="dead" data-type="dead">REQUESTS FOR EVIDENCE / DEADLINES.</mark> If the agency requests additional information, you may need to respond <mark class="dead" data-type="dead">within a stated number of days</mark> to avoid delays or closure.`,
+          `4. <mark class="fee" data-type="fee">FEES AND PAYMENTS.</mark> Filing fees may be required and may be <mark class="fee" data-type="fee">nonrefundable</mark> depending on the rules for the submission.`,
+          `5. <mark class="att" data-type="att">ATTESTATION.</mark> You certify under <mark class="att" data-type="att">penalty of perjury</mark> that the information is true and correct to the best of your knowledge.`
+        ]
+      },
+      {
+        id: "I-485",
+        title: "Application to Register Permanent Residence or Adjust Status",
+        category: "Immigration • Permanent Residence",
+        tags: ["green card", "adjust status", "USCIS", "I-485"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">BIOGRAPHIC INFORMATION.</mark> Provide identifiers and immigration history used to assess eligibility.`,
+          `2. <mark class="data" data-type="data">BIOMETRICS / INFORMATION SHARING.</mark> You may be required to provide <mark class="data" data-type="data">biometrics</mark> and authorize checks across records as permitted.`,
+          `3. <mark class="dead" data-type="dead">APPOINTMENTS AND DEADLINES.</mark> Missing appointments or response windows can lead to delays or closure.`,
+          `4. <mark class="fee" data-type="fee">FEES.</mark> Payment rules may include consequences for returned payments and conditions for waivers.`,
+          `5. <mark class="att" data-type="att">SIGNATURE CERTIFICATION.</mark> Signed statements are typically made under penalty of perjury.`
+        ]
+      },
+      {
+        id: "I-130",
+        title: "Petition for Alien Relative",
+        category: "Immigration • Family",
+        tags: ["petition", "spouse", "family", "USCIS", "I-130"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">PETITIONER / BENEFICIARY DETAILS.</mark> Names, dates, and relationship history are required.`,
+          `2. <mark class="data" data-type="data">EVIDENCE AND RECORDS.</mark> You may authorize verification of documents and records.`,
+          `3. <mark class="dead" data-type="dead">NOTICES AND RESPONSE WINDOWS.</mark> Notices may require action by specific dates.`,
+          `4. <mark class="att" data-type="att">ATTESTATION.</mark> You certify the petition contents under penalty of perjury.`
+        ]
+      },
+      {
+        id: "I-864",
+        title: "Affidavit of Support (Financial Sponsorship)",
+        category: "Immigration • Financial Support",
+        tags: ["affidavit", "sponsor", "income", "I-864"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">SPONSOR IDENTITY.</mark> Sponsor information is linked to long-term obligations.`,
+          `2. <mark class="waiv" data-type="waiv">OBLIGATIONS / LIMITATIONS.</mark> This document can create binding financial support obligations under its terms.`,
+          `3. <mark class="data" data-type="data">INCOME VERIFICATION.</mark> Authorizes review/verification of financial information.`,
+          `4. <mark class="att" data-type="att">CERTIFICATION.</mark> Statements are certified under penalty of perjury.`
+        ]
+      },
+      {
+        id: "I-765",
+        title: "Application for Employment Authorization (Work Permit)",
+        category: "Immigration • Work",
+        tags: ["work permit", "EAD", "I-765"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">ELIGIBILITY CATEGORY.</mark> The category selected determines what you are requesting.`,
+          `2. <mark class="dead" data-type="dead">TIMING AND VALIDITY.</mark> Filing windows and validity periods may apply.`,
+          `3. <mark class="fee" data-type="fee">FEES.</mark> Some categories require fees; waivers may have requirements.`,
+          `4. <mark class="att" data-type="att">SIGNATURE.</mark> You certify the application under penalty of perjury.`
+        ]
+      },
+      {
+        id: "DS-260",
+        title: "Immigrant Visa Application (Online)",
+        category: "Immigration • Consular Processing",
+        tags: ["visa", "consular", "DS-260"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">PERSONAL DATA.</mark> Biographic and travel history fields are required.`,
+          `2. <mark class="data" data-type="data">SECURITY / DATA USE.</mark> Consent may cover checks and sharing as permitted.`,
+          `3. <mark class="dead" data-type="dead">SUBMISSION RULES.</mark> Some steps must be completed by certain dates.`,
+          `4. <mark class="att" data-type="att">CERTIFICATION.</mark> Certified under penalty of perjury or equivalent declaration.`
+        ]
+      },
+      {
+        id: "SS-5",
+        title: "Application for a Social Security Card",
+        category: "Everyday • Government",
+        tags: ["social security", "SSN", "SSA", "SS-5"],
+        excerpt: [
+          `1. <mark class="id" data-type="id">IDENTITY.</mark> Requires identity and eligibility information.`,
+          `2. <mark class="data" data-type="data">VERIFICATION.</mark> Information can be checked against records.`,
+          `3. <mark class="att" data-type="att">CERTIFICATION.</mark> You certify the information is true and correct.`
+        ]
+      },
+      {
+        id: "BANK-DEP",
+        title: "Bank Deposit Account Agreement (Checking/Savings Terms)",
+        category: "Everyday • Banking",
+        tags: ["bank", "account", "fees", "overdraft", "agreement"],
+        excerpt: [
+          `1. <mark class="fee" data-type="fee">FEES AND CHARGES.</mark> Account maintenance, overdraft, and service fees may apply.`,
+          `2. <mark class="data" data-type="data">DATA SHARING.</mark> The bank may share data with affiliates and service providers as allowed.`,
+          `3. <mark class="dead" data-type="dead">NOTICES.</mark> Some changes can take effect after notice periods.`,
+          `4. <mark class="waiv" data-type="waiv">LIMITATIONS.</mark> Liability limitations may apply to certain losses.`,
+          `5. <mark class="att" data-type="att">ACKNOWLEDGMENT.</mark> You acknowledge receipt/acceptance of terms.`
+        ]
+      },
+      {
+        id: "LEASE",
+        title: "Residential Lease Agreement (Common Sections)",
+        category: "Everyday • Housing",
+        tags: ["lease", "rent", "notice", "fees"],
+        excerpt: [
+          `1. <mark class="fee" data-type="fee">LATE FEES.</mark> Payments after the due date can trigger fees.`,
+          `2. <mark class="dead" data-type="dead">NOTICE REQUIREMENTS.</mark> Termination or changes may require written notice within deadlines.`,
+          `3. <mark class="waiv" data-type="waiv">LIMITATIONS.</mark> Certain damages may be limited under the lease.`,
+          `4. <mark class="att" data-type="att">SIGNATURES.</mark> Parties acknowledge they read and agree to the terms.`
+        ]
+      }
+    ];
+
+    // Keyword mapping to “search query -> likely documents”
+    const KEYMAP = [
+      { keys: ["citizen", "citizenship", "naturalize", "naturalization", "n-400"], hits: ["N-400"] },
+      { keys: ["green card", "adjust status", "permanent resident", "i-485"], hits: ["I-485"] },
+      { keys: ["sponsor", "affidavit", "support", "i-864"], hits: ["I-864"] },
+      { keys: ["spouse", "family", "petition", "i-130"], hits: ["I-130"] },
+      { keys: ["work permit", "employment authorization", "ead", "i-765"], hits: ["I-765"] },
+      { keys: ["immigrant visa", "consular", "ds-260"], hits: ["DS-260"] },
+      { keys: ["social security", "ssn", "ss-5"], hits: ["SS-5"] },
+      { keys: ["bank", "checking", "savings", "deposit account"], hits: ["BANK-DEP"] },
+      { keys: ["lease", "rent", "apartment"], hits: ["LEASE"] }
+    ];
+
+    // -----------------------------
+    // UI state
+    // -----------------------------
+    const catalogEl = document.getElementById("catalog");
+    const docEl = document.getElementById("doc");
+    const viewerDocBadge = document.getElementById("viewerDocBadge");
+    const globalSearch = document.getElementById("globalSearch");
+    const queryInput = document.getElementById("queryInput");
+
+    let highlightsEnabled = true;
+
+    // Switches: toggle visibility by mark[data-type]
     const switches = document.querySelectorAll(".switch");
-    const marks = document.querySelectorAll("mark[data-type]");
 
     function setTypeVisibility(type, on){
+      const marks = document.querySelectorAll(`mark[data-type="${type}"]`);
       marks.forEach(m => {
-        if(m.dataset.type === type){
-          m.style.display = on ? "inline" : "inline";
-          m.style.opacity = on ? "1" : "0.18";
-          m.style.filter = on ? "none" : "grayscale(0.6)";
+        if(!highlightsEnabled){
+          m.style.opacity = "1";
+          m.style.filter = "none";
+          return;
         }
+        m.style.opacity = on ? "1" : "0.18";
+        m.style.filter = on ? "none" : "grayscale(0.6)";
+      });
+    }
+
+    function applyAllSwitches(){
+      switches.forEach(sw => {
+        const type = sw.dataset.switch;
+        const on = sw.classList.contains("on");
+        setTypeVisibility(type, on);
       });
     }
 
@@ -1085,10 +1134,200 @@
         sw.classList.toggle("on");
         const on = sw.classList.contains("on");
         sw.setAttribute("aria-checked", on ? "true" : "false");
-        const type = sw.dataset.switch;
-        setTypeVisibility(type, on);
+        applyAllSwitches();
       });
     });
+
+    // -----------------------------
+    // Render catalog
+    // -----------------------------
+    function renderCatalog(items){
+      catalogEl.innerHTML = "";
+      if(!items.length){
+        catalogEl.innerHTML = `
+          <div class="docCard" style="cursor:default;">
+            <div class="docTop">
+              <div>
+                <b>No matches found</b>
+                <div class="docMeta">
+                  <span class="metaPill">Try different keywords</span>
+                  <span class="metaPill">Example: “green card”, “work permit”, “bank account”</span>
+                </div>
+              </div>
+              <span class="code">—</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach(d => {
+        const tags = d.tags.slice(0,4).map(t => `<span class="metaPill">${escapeHtml(t)}</span>`).join("");
+        const card = document.createElement("div");
+        card.className = "docCard";
+        card.innerHTML = `
+          <div class="docTop">
+            <div>
+              <b>${escapeHtml(d.title)}</b>
+              <div class="docMeta">
+                <span class="metaPill">${escapeHtml(d.category)}</span>
+                ${tags}
+              </div>
+            </div>
+            <span class="code">${escapeHtml(d.id)}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => loadDoc(d.id));
+        catalogEl.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    // -----------------------------
+    // Viewer load
+    // -----------------------------
+    function loadDoc(id){
+      const d = LIB.find(x => x.id === id);
+      if(!d) return;
+
+      viewerDocBadge.textContent = `${d.id} • ${d.title}`;
+
+      const para = d.excerpt.map(line => `<p>${line}</p>`).join("");
+      docEl.innerHTML = `
+        <p class="muted" style="margin-top:2px;">
+          <b>Mock excerpt</b> for educational highlighting. This is not legal advice.
+        </p>
+        ${para}
+        <p class="muted">
+          Spotlight goal: make “small print” visible—deadlines, fees, data-use consent, waivers/limitations, and attestations.
+        </p>
+      `;
+
+      applyAllSwitches();
+    }
+
+    // -----------------------------
+    // Search query -> library hits
+    // -----------------------------
+    function runQuery(q){
+      const query = (q || "").toLowerCase().trim();
+      if(!query) return [];
+
+      const hitIds = new Set();
+      KEYMAP.forEach(rule => {
+        if(rule.keys.some(k => query.includes(k))){
+          rule.hits.forEach(h => hitIds.add(h));
+        }
+      });
+
+      // If no direct rules matched, fallback to general tag/title matching
+      if(hitIds.size === 0){
+        return filterLibrary(query);
+      }
+
+      return LIB.filter(d => hitIds.has(d.id));
+    }
+
+    function filterLibrary(q){
+      const query = (q || "").toLowerCase().trim();
+      if(!query) return LIB.slice();
+
+      return LIB.filter(d => {
+        const hay = `${d.id} ${d.title} ${d.category} ${d.tags.join(" ")}`.toLowerCase();
+        return hay.includes(query);
+      });
+    }
+
+    // -----------------------------
+    // Buttons / inputs
+    // -----------------------------
+    document.getElementById("btnSearch").addEventListener("click", () => {
+      const q = queryInput.value;
+      const results = runQuery(q);
+      renderCatalog(results);
+      if(results[0]) loadDoc(results[0].id);
+    });
+
+    document.getElementById("btnRunQuery").addEventListener("click", () => {
+      const q = queryInput.value;
+      const results = runQuery(q);
+      renderCatalog(results);
+      if(results[0]) loadDoc(results[0].id);
+    });
+
+    document.getElementById("btnClear").addEventListener("click", () => {
+      queryInput.value = "";
+      renderCatalog(LIB);
+      viewerDocBadge.textContent = "No document selected";
+      docEl.innerHTML = `
+        <p class="muted" style="margin-top:2px;">
+          Select a document from the library. This prototype displays a mock excerpt with category highlights.
+        </p>
+        <p class="muted">
+          Tip: Search examples — “apply for citizenship”, “green card”, “affidavit of support”, “work permit”, “social security card”
+        </p>
+      `;
+    });
+
+    document.getElementById("btnResetCatalog").addEventListener("click", () => {
+      renderCatalog(LIB);
+    });
+
+    document.getElementById("btnLoadExample").addEventListener("click", () => {
+      renderCatalog(LIB);
+      loadDoc("N-400");
+    });
+
+    document.getElementById("btnToggleHighlights").addEventListener("click", () => {
+      highlightsEnabled = !highlightsEnabled;
+      // When highlights disabled, show marks normally (no dimming)
+      applyAllSwitches();
+      const badge = document.querySelectorAll(".viewerTop .left .badge")[2];
+      badge.textContent = highlightsEnabled ? "Highlights: ON" : "Highlights: OFF";
+    });
+
+    document.getElementById("btnJump").addEventListener("click", () => {
+      const panel = document.getElementById("clausePanel");
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.getElementById("btnExpandAll").addEventListener("click", () => {
+      document.querySelectorAll("#clausePanel details").forEach(d => d.open = true);
+      document.getElementById("clausePanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.getElementById("btnAbout").addEventListener("click", () => {
+      alert(
+        "Civic Sidekick (Prototype)\n\n" +
+        "Purpose: help people identify common document names (especially immigration forms) and spotlight clause categories that can impact them.\n\n" +
+        "This does NOT provide legal advice or interpret a user’s specific situation."
+      );
+    });
+
+    // Global search bar filters catalog
+    globalSearch.addEventListener("input", () => {
+      const q = globalSearch.value;
+      renderCatalog(filterLibrary(q));
+    });
+
+    // Ctrl+K focus
+    window.addEventListener("keydown", (e) => {
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
+        e.preventDefault();
+        globalSearch.focus();
+      }
+    });
+
+    // Initial render
+    renderCatalog(LIB);
   </script>
 </body>
 </html>
