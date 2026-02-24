@@ -13,7 +13,6 @@
       --bgBot:#f7fff8;
 
       --card: rgba(255,255,255,0.88);
-      --card2: rgba(255,255,255,0.78);
       --border: rgba(25, 35, 65, 0.12);
 
       --text: rgba(14, 18, 32, 0.92);
@@ -40,7 +39,7 @@
         radial-gradient(1100px 700px at 18% 10%, rgba(91,108,255,0.18), transparent 55%),
         radial-gradient(900px 650px at 82% 18%, rgba(31,182,255,0.18), transparent 55%),
         radial-gradient(900px 650px at 50% 92%, rgba(34,197,94,0.10), transparent 55%),
-        linear-gradient(180deg, var(--bgTop), var(--bgMid));
+        linear-gradient(180deg, var(--bgTop), var(--bgMid), var(--bgBot));
     }
 
     .wrap{
@@ -123,7 +122,7 @@
       box-shadow: 0 16px 34px rgba(31,182,255,0.18);
     }
 
-    /* Main hero: “Upload a document” feature front-and-center */
+    /* Hero wrapper for search + upload (same hero style as before) */
     .hero{
       margin-top: 18px;
       border:1px solid var(--border);
@@ -178,9 +177,31 @@
       flex: 0 0 auto;
     }
 
-    /* Upload zone styled like your screenshot but in the bright theme */
+    /* Search bar (non-functional) — back where it was: inside hero area */
+    .searchWrap{
+      margin-top: 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border: 1px solid rgba(25,35,65,0.14);
+      background: rgba(255,255,255,0.86);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(20,30,60,0.05);
+    }
+    .searchWrap span{ opacity: 0.75; }
+    .searchWrap input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    /* Upload zone — do NOT change appearance (kept identical to prior version) */
     .uploadZone{
-      margin-top: 18px;
+      margin-top: 14px;
       border: 1.6px dashed rgba(25,35,65,0.18);
       background: rgba(255,255,255,0.64);
       border-radius: var(--radius2);
@@ -242,7 +263,7 @@
       box-shadow: 0 10px 22px rgba(20,30,60,0.05);
     }
 
-    /* Document library section (simple + fast in/out) */
+    /* Document library section (simple) */
     .section{
       margin-top: 16px;
       border:1px solid var(--border);
@@ -333,19 +354,18 @@
       <!-- Minimal actions (UI-only) -->
       <div style="display:flex; gap:10px; align-items:center;">
         <button class="btn" type="button" title="UI only">🌐 Language</button>
-        <button class="btn primary" type="button" title="UI only">Start</button>
+        <button class="btn primary" type="button" title="UI only">Apply</button>
       </div>
     </div>
 
-    <!-- FRONT + CENTER: Upload feature -->
+    <!-- Hero: title + search bar + upload -->
     <div class="hero">
       <div class="heroInner">
         <div class="heroTop">
           <div class="heroTitle">
             <h2>Upload a document. We spotlight what can impact you.</h2>
             <p>
-              Bring a form, agreement, or letter. This prototype shows how the upload experience will work
-              so people can quickly check key sections and move on.
+              Bring a form, agreement, or letter. This is a UI prototype: nothing is functional yet.
             </p>
           </div>
 
@@ -354,6 +374,13 @@
           </div>
         </div>
 
+        <!-- Search bar (back) -->
+        <div class="searchWrap" title="Non-functional prototype">
+          <span>🔎</span>
+          <input type="text" placeholder='Search documents (prototype)…' disabled />
+        </div>
+
+        <!-- Upload card (right below search; appearance unchanged) -->
         <div class="uploadZone" aria-label="Upload a document (prototype)">
           <div class="uploadLeft">
             <div class="uploadIcon" aria-hidden="true">PDF</div>
@@ -372,7 +399,35 @@
       </div>
     </div>
 
-    <!-- Simple front-page document list (kept clean) -->
+    <!-- Everyday documents BELOW upload -->
+    <div class="section">
+      <div class="sectionHead">
+        <div>
+          <b>Everyday documents</b>
+          <span>Common in the U.S.</span>
+        </div>
+        <span>Quick pick</span>
+      </div>
+
+      <div class="docGrid">
+        <div class="docCard" title="UI only">
+          <div class="docTitle">SS-5 — Social Security Card</div>
+          <div class="docSub">Application for a Social Security Card</div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">Bank Account Agreement</div>
+          <div class="docSub">Checking/Savings Terms</div>
+        </div>
+
+        <div class="docCard" title="UI only">
+          <div class="docTitle">Lease Agreement</div>
+          <div class="docSub">Residential Lease Terms</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Immigration documents at the BOTTOM -->
     <div class="section">
       <div class="sectionHead">
         <div>
@@ -415,8 +470,9 @@
       </div>
     </div>
 
+    <!-- Footer: remove "Built for quick-in-and-out clarity" line (only keep what you want) -->
     <div class="footerNote">
-      Educational prototype • Not legal advice • Built for quick in-and-out clarity
+      Educational prototype • Not legal advice
     </div>
 
   </div>
