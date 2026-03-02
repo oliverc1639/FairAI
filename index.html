@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Civic Sidekick — Document Risk Highlighter (Prototype)</title>
+  <title>Civic Sidekick — Resaltador de Riesgos en Documentos (Prototipo)</title>
 
   <style>
     :root{
@@ -258,17 +258,15 @@
       flex: 0 0 auto;
     }
 
-    /* makes room + scroll so the yellow box can sit at the bottom */
     .paperContent{
       position: relative;
       flex: 1 1 auto;
       overflow:auto;
       padding: 12px;
-      padding-bottom: 170px; /* space for yellow highlight box */
+      padding-bottom: 170px;
       background:#fff;
     }
 
-    /* your form image */
     .docImageWrap{
       border: 1px solid rgba(2,25,35,0.14);
       border-radius: 10px;
@@ -293,7 +291,7 @@
       padding: 10px 12px;
       box-shadow: 0 12px 26px rgba(2,25,35,0.10);
       z-index: 3;
-      pointer-events:none; /* keeps scrolling easy */
+      pointer-events:none;
     }
     .highlight b{
       display:block;
@@ -375,84 +373,82 @@
 </head>
 
 <body>
-  <main class="shell" aria-label="Civic Sidekick prototype layout">
+  <main class="shell" aria-label="Diseño de prototipo de Civic Sidekick">
     <section class="inner">
 
       <div class="header">Civic Sidekick</div>
 
-      <nav class="tabs" aria-label="Primary navigation (prototype)">
-        <button class="tab active" type="button" title="UI only">My Saved documents</button>
-        <button class="tab" type="button" title="UI only">Search Documents</button>
-        <button class="tab" type="button" title="UI only">Overall tips</button>
+      <nav class="tabs" aria-label="Navegación principal (prototipo)">
+        <button class="tab active" type="button" title="Solo IU">Mis documentos guardados</button>
+        <button class="tab" type="button" title="Solo IU">Buscar documentos</button>
+        <button class="tab" type="button" title="Solo IU">Consejos generales</button>
       </nav>
 
       <div class="grid">
 
-        <!-- LEFT -->
-        <aside class="leftCol" aria-label="Background info panels">
+        <!-- IZQUIERDA -->
+        <aside class="leftCol" aria-label="Paneles de información de fondo">
           <div class="sideBox">
-            <div class="sideLabel">Background info</div>
+            <div class="sideLabel">Información de fondo</div>
             <div class="sideText">
-H-1B is an employer-filed petition for a
-specialty occupation worker.
+H-1B es una petición presentada por el empleador
+para un trabajador en una ocupación especializada.
 
-The employer files Form I-129 (H-1B
-supplement + fees) with USCIS. The
-worker’s status is tied to the petitioning
-employer and the job details (role, wage,
-worksite).
+El empleador presenta el Formulario I-129
+(suplemento H-1B + tarifas) ante USCIS. El estatus
+del trabajador está ligado al empleador peticionario
+y a los detalles del puesto (función, salario, lugar
+de trabajo).
 
-This tool flags issues that can affect you:
-fees/cost shifting, strict filing deadlines,
-job changes that trigger amendments,
-and “status risk” after termination.
+Esta herramienta marca aspectos que pueden afectarte:
+tarifas/cambio de costos, plazos estrictos de presentación,
+cambios de puesto que requieren enmiendas, y “riesgo de estatus”
+después de la terminación.
             </div>
           </div>
 
           <div class="sideBox small">
-            <div class="sideLabel">Update status</div>
-            <div class="sideText">This information was updated as of 2026</div>
+            <div class="sideLabel">Estado de actualización</div>
+            <div class="sideText">Esta información fue actualizada en 2026</div>
           </div>
         </aside>
 
-        <!-- CENTER -->
-        <section class="docPanel" aria-label="Document preview with highlights">
-          <div class="docTitleBar">H-1B Petition (Form I-129)</div>
+        <!-- CENTRO -->
+        <section class="docPanel" aria-label="Vista previa del documento con resaltados">
+          <div class="docTitleBar">Petición H-1B (Formulario I-129)</div>
 
           <div class="docStage">
-            <div class="paper" aria-label="Example document (with real page image)">
+            <div class="paper" aria-label="Documento de ejemplo (con imagen real)">
 
               <div class="paperHeader">
                 <div class="seal" aria-hidden="true"></div>
                 <div class="meta">
-                  <b>Petition for a Nonimmigrant Worker (H-1B)</b>
-                  <span>USCIS • Form I-129 (H Classification) • Example preview (prototype)</span>
+                  <b>Petición para un trabajador no inmigrante (H-1B)</b>
+                  <span>USCIS • Formulario I-129 (Clasificación H) • Vista previa (prototipo)</span>
                 </div>
                 <div class="corner">
-                  Form I-129<br/>
-                  H-1B Supplement<br/>
-                  Page 1 of 38
+                  Formulario I-129<br/>
+                  Suplemento H-1B<br/>
+                  Página 1 de 38
                 </div>
               </div>
 
-              <!-- THIS IS THE IMPORTANT PART: image is ABOVE the yellow box -->
               <div class="paperContent">
-                <!-- Put your PNG in the same folder as this HTML and name it i129_page1.png -->
                 <div class="docImageWrap">
-                  <img class="docImage" src="I.129.png" alt="USCIS Form I-129 — front page" />
+                  <img class="docImage" src="I.129.png" alt="USCIS Formulario I-129 — primera página" />
                 </div>
               </div>
 
-              <div class="highlight" aria-label="Highlighted clause example">
-                <b>Potentially harmful clause / risk triggers (H-1B)</b>
+              <div class="highlight" aria-label="Ejemplo de cláusula resaltada">
+                <b>Cláusula potencialmente perjudicial / factores de riesgo (H-1B)</b>
                 <p>
-• COST SHIFTING: Some filing/attorney fees cannot be charged to the worker via payroll deduction or repayment clauses.
+• TRASLADO DE COSTOS: Algunas tarifas de presentación/abogado no pueden cobrarse al trabajador mediante deducciones de nómina o cláusulas de reembolso.
 
-• DEADLINES: Extensions must be filed before the current H-1B end date; a timely filed extension can allow continued work up to 240 days while pending.
+• PLAZOS: Las extensiones deben presentarse antes de la fecha de fin actual del H-1B; una extensión presentada a tiempo puede permitir continuar trabajando hasta 240 días mientras está pendiente.
 
-• JOB CHANGES: Title/duties/worksite changes may require an amended petition; working outside the approved terms risks status.
+• CAMBIOS DE PUESTO: Cambios en el título/funciones/lugar de trabajo pueden requerir una petición enmendada; trabajar fuera de los términos aprobados pone en riesgo el estatus.
 
-• TERMINATION RISK: Up to a 60-day discretionary grace period may be available (or until the petition end date, whichever is shorter).
+• RIESGO POR TERMINACIÓN: Puede existir un período discrecional de gracia de hasta 60 días (o hasta la fecha de fin de la petición, lo que ocurra primero).
                 </p>
               </div>
 
@@ -460,43 +456,43 @@ and “status risk” after termination.
           </div>
         </section>
 
-        <!-- RIGHT -->
-        <aside class="rightPanel" aria-label="Key risks panel">
+        <!-- DERECHA -->
+        <aside class="rightPanel" aria-label="Panel de riesgos clave">
           <p>
-Fee shifting
-&amp; deductions
+Traslado de tarifas
+&amp; deducciones
 
-240-day pending
-extension
+Extensión pendiente
+de 240 días
 
-60-day grace
-period
+Período de gracia
+de 60 días
 
-Amendments for
-job/worksite
-changes
+Enmiendas por cambios
+de puesto/lugar
 
-Strict end dates
+Fechas de fin
+estrictas
           </p>
         </aside>
 
       </div>
 
-      <!-- Bottom Search Bar -->
-      <footer class="bottomBar" aria-label="Search bar">
-        <div class="search" title="Prototype: UI only">
+      <!-- Barra de búsqueda inferior -->
+      <footer class="bottomBar" aria-label="Barra de búsqueda">
+        <div class="search" title="Prototipo: Solo IU">
           <span aria-hidden="true">🔎</span>
-          <input type="text" placeholder="Search any U.S. document" />
+          <input type="text" placeholder="Busca cualquier documento de EE. UU." />
         </div>
-        <button class="btn" type="button" title="UI only">Browse</button>
-        <button class="btn primary" type="button" title="UI only">Search</button>
+        <button class="btn" type="button" title="Solo IU">Examinar</button>
+        <button class="btn primary" type="button" title="Solo IU">Buscar</button>
       </footer>
 
     </section>
   </main>
 
   <script>
-    // Prototype only (non-functional).
+    // Solo prototipo (no funcional).
   </script>
 </body>
 </html>
