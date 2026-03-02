@@ -39,7 +39,6 @@
       padding: 24px 14px;
     }
 
-    /* Outer “tablet / poster” shell (like screenshot rounded frame) */
     .shell{
       width: min(980px, 100%);
       background: #f2f5f7;
@@ -57,7 +56,6 @@
       position: relative;
     }
 
-    /* Top header bar */
     .header{
       background: linear-gradient(180deg, var(--teal), var(--teal2));
       color: #fff;
@@ -70,7 +68,6 @@
       border: 1px solid rgba(255,255,255,0.15);
     }
 
-    /* Tabs row */
     .tabs{
       display:flex;
       gap:10px;
@@ -97,7 +94,6 @@
       color: rgba(11,90,116,0.95);
     }
 
-    /* Main 3-column layout like screenshot */
     .grid{
       display:grid;
       grid-template-columns: 170px 1fr 170px;
@@ -105,7 +101,6 @@
       align-items: stretch;
     }
 
-    /* Side boxes (left) */
     .leftCol{
       display:flex;
       flex-direction:column;
@@ -139,7 +134,6 @@
       white-space: pre-line;
     }
 
-    /* Right vertical panel */
     .rightPanel{
       background: linear-gradient(180deg, var(--teal), var(--teal2));
       color: rgba(255,255,255,0.98);
@@ -172,7 +166,6 @@
       white-space: pre-line;
     }
 
-    /* Center: document panel */
     .docPanel{
       background: rgba(255,255,255,0.92);
       border: 1px solid var(--line);
@@ -204,7 +197,6 @@
         linear-gradient(180deg, rgba(255,255,255,0.92), rgba(245,248,250,0.92));
     }
 
-    /* Faux “document image” */
     .paper{
       height: 100%;
       min-height: 380px;
@@ -302,7 +294,6 @@
       background: rgba(15,23,42,0.08);
     }
 
-    /* Highlighted clause area + arrow */
     .highlight{
       position:absolute;
       left: 18px;
@@ -324,6 +315,7 @@
       font-size: 12px;
       color: rgba(15,23,42,0.78);
       line-height: 1.35;
+      white-space: pre-line;
     }
 
     .arrow{
@@ -346,7 +338,6 @@
       border-radius: 4px;
     }
 
-    /* Bottom search bar (like screenshot “Search bar”) */
     .bottomBar{
       margin-top: 14px;
       background: linear-gradient(180deg, var(--teal), var(--teal2));
@@ -401,21 +392,11 @@
       border-color: transparent;
     }
 
-    /* Responsive */
     @media (max-width: 920px){
-      .grid{
-        grid-template-columns: 1fr;
-      }
-      .rightPanel{
-        min-height: 120px;
-      }
-      .leftCol{
-        flex-direction:row;
-      }
-      .sideBox{
-        min-height: 120px;
-        flex: 1 1 0;
-      }
+      .grid{ grid-template-columns: 1fr; }
+      .rightPanel{ min-height: 120px; }
+      .leftCol{ flex-direction:row; }
+      .sideBox{ min-height: 120px; flex: 1 1 0; }
       .docPanel{ min-height: 560px; }
     }
     @media (max-width: 560px){
@@ -445,13 +426,19 @@
           <div class="sideBox">
             <div class="sideLabel">Background info</div>
             <div class="sideText">
-This tool highlights clauses that can
-potentially harm or affect you (fees,
-renewals, waivers, data sharing, penalties,
-and strict deadlines).
+H-1B is an employer-filed petition for a
+specialty occupation worker.
 
-Use it to review before you sign,
-submit, or pay.
+The employer files Form I-129 (H-1B
+supplement + fees) with USCIS. The
+worker’s status is tied to the petitioning
+employer and the job details (role, wage,
+worksite).
+
+This tool flags issues that can affect you:
+fees/cost shifting, strict filing deadlines,
+job changes that trigger amendments,
+and “status risk” after termination.
             </div>
           </div>
 
@@ -463,19 +450,19 @@ submit, or pay.
 
         <!-- CENTER: Document preview -->
         <section class="docPanel" aria-label="Document preview with highlights">
-          <div class="docTitleBar">Naturalization I-86</div>
+          <div class="docTitleBar">H-1B Petition (Form I-129)</div>
 
           <div class="docStage">
             <div class="paper" aria-label="Example document (mock)">
               <div class="paperHeader">
                 <div class="seal" aria-hidden="true"></div>
                 <div class="meta">
-                  <b>Application for Naturalization</b>
-                  <span>USCIS • Example document preview (prototype)</span>
+                  <b>Petition for a Nonimmigrant Worker (H-1B)</b>
+                  <span>USCIS • Form I-129 (H Classification) • Example preview (prototype)</span>
                 </div>
                 <div class="corner">
-                  OMB No. ####-####<br/>
-                  Expires ##/##/####<br/>
+                  Form I-129<br/>
+                  H-1B Supplement<br/>
                   Page 1 of ##
                 </div>
               </div>
@@ -501,14 +488,18 @@ submit, or pay.
                 <div class="row tiny"></div>
               </div>
 
-              <!-- Arrow + highlight like screenshot -->
               <div class="arrow" aria-hidden="true"></div>
 
               <div class="highlight" aria-label="Highlighted clause example">
-                <b>Potentially harmful clause (example)</b>
+                <b>Potentially harmful clause / risk triggers (H-1B)</b>
                 <p>
-                  This section may include <b>fees</b>, <b>automatic renewal</b>, strict <b>deadlines</b>,
-                  or consent to additional checks. Review carefully before submitting.
+• COST SHIFTING: Some filing/attorney fees cannot be charged to the worker via payroll deduction or repayment clauses. :contentReference[oaicite:0]{index=0}
+
+• DEADLINES: Extensions must be filed before the current H-1B end date; a timely filed extension can allow continued work up to 240 days while pending. :contentReference[oaicite:1]{index=1}
+
+• JOB CHANGES: Title/duties/worksite changes may require an amended petition; working outside the approved terms risks status. :contentReference[oaicite:2]{index=2}
+
+• TERMINATION RISK: Up to a 60-day discretionary grace period may be available (or until the petition end date, whichever is shorter). :contentReference[oaicite:3]{index=3}
                 </p>
               </div>
             </div>
@@ -518,13 +509,20 @@ submit, or pay.
         <!-- RIGHT: Vertical callout -->
         <aside class="rightPanel" aria-label="Key risks panel">
           <p>
-Dispute
-Real-time
-and
-Arbitration,
-late fees,
-automatic
-renewal
+Fee shifting
+&amp; deductions
+
+240-day pending
+extension
+
+60-day grace
+period
+
+Amendments for
+job/worksite
+changes
+
+Strict end dates
           </p>
         </aside>
 
