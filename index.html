@@ -308,28 +308,6 @@
       white-space: pre-line;
     }
 
-    .arrow{
-      position:absolute;
-      right: 28px;
-      top: 54%;
-      width: 0; height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-top: 28px solid rgba(11,90,116,0.92);
-      transform: rotate(-20deg);
-      filter: drop-shadow(0 10px 16px rgba(2,25,35,0.18));
-      z-index: 2;
-      pointer-events:none;
-    }
-    .arrow::after{
-      content:"";
-      position:absolute;
-      left: -8px; top: -22px;
-      width: 16px; height: 22px;
-      background: rgba(11,90,116,0.92);
-      border-radius: 4px;
-    }
-
     .bottomBar{
       margin-top: 14px;
       background: linear-gradient(180deg, var(--teal), var(--teal2));
@@ -464,8 +442,6 @@ and “status risk” after termination.
                   <img class="docImage" src="I.129.png" alt="USCIS Form I-129 — front page" />
                 </div>
               </div>
-
-              <div class="arrow" aria-hidden="true"></div>
 
               <div class="highlight" aria-label="Highlighted clause example">
                 <b>Potentially harmful clause / risk triggers (H-1B)</b>
